@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BBC Mobile — Admin Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --primary:#1a1a2e;--accent:#e63946;--green:#10b981;--gold:#f4a261;
+  --bg:#f4f5f7;--card:#fff;--border:#e5e7eb;--text:#1a1a2e;--muted:#6b7280;--light:#9ca3af;
+  --radius:12px;--shadow:0 2px 8px rgba(0,0,0,.08);--shadow-lg:0 8px 24px rgba(0,0,0,.12);
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* LOGIN */
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#1a1a2e,#0f3460)}
+.login-box{background:#fff;border-radius:20px;padding:48px 40px;width:100%;max-width:400px;box-shadow:var(--shadow-lg);text-align:center}
+.login-logo{width:60px;height:60px;background:var(--accent);border-radius:14px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:22px;margin:0 auto 20px}
+.login-box h1{font-size:22px;font-weight:800;margin-bottom:6px}
+.login-box p{color:var(--muted);font-size:14px;margin-bottom:28px}
+.login-field{width:100%;padding:12px 16px;border:1.5px solid var(--border);border-radius:10px;font-size:15px;margin-bottom:12px;outline:none;font-family:inherit;transition:border .2s}
+.login-field:focus{border-color:var(--accent)}
+.login-btn{width:100%;background:var(--accent);color:#fff;border:none;padding:13px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
+.login-btn:hover{background:#c1121f}
+.login-error{color:var(--accent);font-size:13px;margin-top:10px;display:none;font-weight:500}
+
+/* ADMIN LAYOUT */
+#admin-screen{display:none;min-height:100vh}
+.admin-top{background:var(--primary);color:#fff;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:100}
+.admin-top-left{display:flex;align-items:center;gap:12px}
+.admin-logo{width:36px;height:36px;background:var(--accent);border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px}
+.admin-top h1{font-size:16px;font-weight:700}
+.live-badge{background:var(--green);color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px}
+.btn-logout{background:rgba(255,255,255,.1);border:none;color:#fff;padding:7px 14px;border-radius:8px;font-size:13px;cursor:pointer;font-family:inherit}
+.btn-logout:hover{background:var(--accent)}
+.admin-body{display:flex;min-height:calc(100vh - 60px)}
+
+/* NAV */
+.admin-nav{width:220px;background:#fff;border-right:1px solid var(--border);padding:20px 0;flex-shrink:0;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto}
+.nav-section{padding:8px 16px;font-size:11px;font-weight:700;color:var(--light);text-transform:uppercase;letter-spacing:1px;margin-top:12px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;font-size:14px;font-weight:500;color:var(--muted);cursor:pointer;transition:all .15s;border-left:3px solid transparent}
+.nav-item:hover{color:var(--text);background:#f9fafb}
+.nav-item.active{color:var(--accent);background:#fff5f5;border-left-color:var(--accent);font-weight:600}
+.nav-item svg{width:18px;height:18px;flex-shrink:0}
+.admin-content{flex:1;padding:28px;overflow-y:auto}
+.page-section{display:none}
+.page-section.active{display:block}
+
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:16px;margin-bottom:28px}
+.stat-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:20px;display:flex;align-items:center;gap:14px}
+.stat-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.stat-val{font-size:24px;font-weight:800;line-height:1}
+.stat-lbl{font-size:12px;color:var(--muted);margin-top:3px}
+
+/* SECTION HEADER */
+.section-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.section-hd h2{font-size:20px;font-weight:700}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:9px;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all .2s;font-family:inherit}
+.btn-primary{background:var(--accent);color:#fff}.btn-primary:hover{background:#c1121f}
+.btn-secondary{background:var(--bg);border:1.5px solid var(--border);color:var(--text)}.btn-secondary:hover{border-color:var(--accent);color:var(--accent)}
+.btn-green{background:var(--green);color:#fff}.btn-green:hover{background:#059669}
+.btn-danger{background:#fee2e2;color:#dc2626;border:1px solid #fca5a5}.btn-danger:hover{background:#dc2626;color:#fff}
+.btn-sm{padding:6px 12px;font-size:12px}
+
+/* FORM */
+.form-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:20px}
+.form-card-head{padding:16px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;background:#fafafa}
+.form-card-head h3{font-size:15px;font-weight:700}
+.form-body{padding:24px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-group.full{grid-column:1/-1}
+.form-label{font-size:13px;font-weight:600}
+.form-label span{color:var(--accent)}
+.form-input,.form-select,.form-textarea{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:14px;font-family:inherit;outline:none;transition:border .2s;background:#fff;color:var(--text)}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--accent)}
+.form-textarea{resize:vertical;min-height:80px}
+
+/* PHOTO UPLOAD */
+.photo-drop{border:2px dashed var(--border);border-radius:12px;padding:28px;text-align:center;cursor:pointer;transition:all .2s;background:#fafafa;position:relative}
+.photo-drop:hover,.photo-drop.over{border-color:var(--accent);background:#fff5f5}
+.photo-drop input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.photo-drop p{font-size:14px;color:var(--muted);margin:8px 0 4px}
+.photo-drop small{font-size:12px;color:var(--light)}
+.url-row{display:flex;gap:8px;margin-top:10px}
+.url-row .form-input{flex:1}
+.divider{display:flex;align-items:center;gap:10px;margin:12px 0;color:var(--light);font-size:12px;font-weight:600}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.photo-previews{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.preview-item{position:relative;width:88px;height:88px;border-radius:10px;overflow:hidden;border:2px solid var(--border)}
+.preview-item.main-photo{border-color:var(--accent)}
+.preview-item img{width:100%;height:100%;object-fit:cover}
+.preview-remove{position:absolute;top:3px;right:3px;background:rgba(0,0,0,.6);color:#fff;border:none;border-radius:50%;width:20px;height:20px;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.main-badge{position:absolute;bottom:0;left:0;right:0;background:var(--accent);color:#fff;font-size:9px;font-weight:700;text-align:center;padding:2px;text-transform:uppercase}
+
+/* TOGGLE */
+.toggle-wrap{display:flex;align-items:center;gap:12px}
+.toggle{position:relative;width:48px;height:26px}
+.toggle input{opacity:0;width:0;height:0;position:absolute}
+.toggle-slider{position:absolute;inset:0;background:#d1d5db;border-radius:20px;cursor:pointer;transition:.3s}
+.toggle-slider:before{content:'';position:absolute;width:20px;height:20px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.3s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.toggle input:checked+.toggle-slider{background:var(--green)}
+.toggle input:checked+.toggle-slider:before{transform:translateX(22px)}
+
+/* STARS */
+.star-input{display:flex;gap:4px;flex-direction:row-reverse;justify-content:flex-end}
+.star-input input{display:none}
+.star-input label{font-size:24px;color:#d1d5db;cursor:pointer;transition:color .15s}
+.star-input label:hover,.star-input label:hover~label,.star-input input:checked~label{color:var(--gold)}
+
+/* STOCK */
+.stock-options{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
+.stock-opt{display:flex;align-items:center;gap:8px;padding:10px 16px;border:1.5px solid var(--border);border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s}
+.stock-opt input{accent-color:var(--accent);width:15px;height:15px}
+.stock-opt.sel-in{border-color:var(--green);background:#f0fdf4;color:#065f46}
+.stock-opt.sel-out{border-color:var(--accent);background:#fff5f5;color:var(--accent)}
+
+/* PRODUCT TABLE */
+.products-table{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.tbl-head{display:grid;grid-template-columns:56px 1fr 90px 90px 100px 120px;gap:0;background:#f9fafb;border-bottom:1px solid var(--border);padding:10px 16px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.tbl-row{display:grid;grid-template-columns:56px 1fr 90px 90px 100px 120px;gap:0;padding:12px 16px;border-bottom:1px solid var(--border);align-items:center;transition:background .15s}
+.tbl-row:last-child{border-bottom:none}
+.tbl-row:hover{background:#fafafa}
+.prod-thumb{width:46px;height:46px;border-radius:8px;object-fit:cover;background:var(--bg);border:1px solid var(--border)}
+.prod-thumb-ph{width:46px;height:46px;border-radius:8px;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:20px}
+.prod-name{font-size:13px;font-weight:600;margin-bottom:2px}
+.prod-brand-lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.status-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px}
+.s-pub{background:#d1fae5;color:#065f46}
+.s-dft{background:#f3f4f6;color:#6b7280}
+.s-out{background:#fee2e2;color:#dc2626}
+.tbl-actions{display:flex;gap:5px;flex-wrap:wrap}
+
+/* SEARCH */
+.search-row{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.admin-search{flex:1;min-width:180px;padding:9px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:14px;outline:none;font-family:inherit}
+.admin-search:focus{border-color:var(--accent)}
+.filter-sel{padding:9px 12px;border:1.5px solid var(--border);border-radius:9px;font-size:13px;background:#fff;outline:none;font-family:inherit;cursor:pointer}
+
+
+/* BANNERS */
+.banner-list{display:flex;flex-direction:column;gap:14px;padding:20px}
+.banner-item{background:#fff;border:1.5px solid var(--border);border-radius:12px;padding:16px;display:flex;align-items:center;gap:16px;transition:all .2s;position:relative}
+.banner-item:hover{box-shadow:var(--shadow);border-color:var(--accent)}
+.banner-item.inactive{opacity:.55}
+.banner-preview{width:120px;height:70px;border-radius:8px;overflow:hidden;background:var(--bg);border:1px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:28px}
+.banner-preview img{width:100%;height:100%;object-fit:cover}
+.banner-info{flex:1;min-width:0}
+.banner-title-text{font-size:14px;font-weight:700;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.banner-sub-text{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.banner-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;margin-top:6px;display:inline-block}
+.banner-badge.active{background:#d1fae5;color:#065f46}
+.banner-badge.inactive{background:#f3f4f6;color:var(--muted)}
+.banner-actions{display:flex;gap:6px;flex-shrink:0}
+.banner-drag{color:var(--muted);font-size:20px;cursor:grab;padding:4px;user-select:none}
+/* Banner form */
+.color-opts{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.color-opt{width:32px;height:32px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:border .2s;flex-shrink:0}
+.color-opt.selected{border-color:var(--text)}
+.banner-preview-box{border-radius:12px;padding:28px 24px;color:#fff;margin-top:14px;transition:all .3s;position:relative;overflow:hidden;min-height:120px;display:flex;flex-direction:column;justify-content:center}
+.banner-preview-box h3{font-size:20px;font-weight:800;margin-bottom:6px}
+.banner-preview-box p{font-size:13px;opacity:.85}
+.banner-preview-box .preview-btn{display:inline-block;background:rgba(255,255,255,.25);color:#fff;padding:6px 16px;border-radius:6px;font-size:12px;font-weight:700;margin-top:10px}
+
+
+/* COLOR VARIANTS */
+.color-variants-wrap{display:flex;flex-direction:column;gap:10px}
+.variant-row{display:flex;gap:8px;align-items:center;background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:10px 12px}
+.variant-color-preview{width:28px;height:28px;border-radius:50%;border:2px solid rgba(0,0,0,.15);flex-shrink:0;cursor:pointer}
+.variant-name{flex:1;padding:6px 10px;border:1.5px solid var(--border);border-radius:7px;font-size:13px;font-family:inherit;outline:none}
+.variant-name:focus{border-color:var(--accent)}
+.variant-price{width:100px;padding:6px 10px;border:1.5px solid var(--border);border-radius:7px;font-size:13px;font-family:inherit;outline:none}
+.variant-price:focus{border-color:var(--accent)}
+.variant-stock{width:70px;padding:6px 10px;border:1.5px solid var(--border);border-radius:7px;font-size:13px;font-family:inherit;outline:none}
+.variant-stock:focus{border-color:var(--accent)}
+.variant-remove{background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;padding:2px 4px}
+.variant-remove:hover{color:var(--accent)}
+.btn-add-variant{background:var(--bg);border:1.5px dashed var(--border);border-radius:9px;padding:10px;width:100%;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .2s;font-family:inherit}
+.btn-add-variant:hover{border-color:var(--accent);color:var(--accent);background:#fff5f5}
+/* Photo per variant */
+.variant-photo-wrap{position:relative}
+.variant-photo-thumb{width:36px;height:36px;border-radius:6px;object-fit:cover;border:1px solid var(--border);cursor:pointer}
+.variant-photo-ph{width:36px;height:36px;border-radius:6px;background:#fff;border:1.5px dashed var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer}
+.variant-photo-ph:hover{border-color:var(--accent)}
+
+/* BRAND LOGOS */
+.brand-logo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:16px;padding:20px}
+.blc{background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:16px;text-align:center;transition:all .2s}
+.blc:hover{border-color:var(--accent);box-shadow:var(--shadow)}
+.blc-img-wrap{width:80px;height:80px;margin:0 auto 10px;border-radius:12px;background:#fff;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;overflow:hidden}
+.blc-hover{position:absolute;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s}
+.blc-img-wrap:hover .blc-hover{opacity:1}
+.blc-hover span{color:#fff;font-size:11px;font-weight:700}
+.blc-img{width:100%;height:100%;object-fit:contain;padding:8px}
+.blc-emoji{font-size:36px}
+.blc-name{font-size:13px;font-weight:700;margin-bottom:3px}
+.blc-count{font-size:11px;color:var(--muted);margin-bottom:10px}
+.blc-url-row{display:flex;gap:6px;margin-top:8px}
+.blc-url{flex:1;padding:6px 10px;border:1.5px solid var(--border);border-radius:7px;font-size:12px;outline:none;font-family:inherit}
+.blc-url:focus{border-color:var(--accent)}
+
+/* SETTINGS */
+.settings-wrap{max-width:520px}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:16px;padding:28px;max-width:400px;width:100%}
+.modal h3{font-size:17px;font-weight:700;margin-bottom:8px}
+.modal p{color:var(--muted);font-size:14px;margin-bottom:24px;line-height:1.6}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end}
+
+/* EMPTY */
+.empty-state{text-align:center;padding:60px 20px;color:var(--muted)}
+.empty-state div{font-size:52px;margin-bottom:12px}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--primary);color:#fff;padding:12px 24px;border-radius:10px;font-size:14px;font-weight:500;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;box-shadow:var(--shadow-lg)}
+.toast.show{opacity:1}
+
+@media(max-width:768px){
+  .admin-nav{display:none}
+  .tbl-head,.tbl-row{grid-template-columns:46px 1fr 80px 80px}
+  .tbl-head>*:nth-child(n+5),.tbl-row>*:nth-child(n+5){display:none}
+  .form-body{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">BB</div>
+    <h1>BBC Mobile Admin</h1>
+    <p>Enter your credentials to continue</p>
+    <input class="login-field" type="text" id="login-user" placeholder="Username" autocomplete="username">
+    <input class="login-field" type="password" id="login-pass" placeholder="Password" autocomplete="current-password">
+    <button class="login-btn" onclick="doLogin()">Sign In →</button>
+    <div class="login-error" id="login-error">❌ Wrong username or password</div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div id="admin-screen">
+  <div class="admin-top">
+    <div class="admin-top-left">
+      <div class="admin-logo">BB</div>
+      <h1>BBC Mobile — Admin</h1>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <span class="live-badge">● Live</span>
+      <a href="index.html" style="color:#9aa5b4;font-size:13px;text-decoration:none">← View Shop</a> <a href="products.html" style="color:#9aa5b4;font-size:13px;text-decoration:none;margin-left:10px">Products</a>
+      <button class="btn-logout" onclick="doLogout()">Sign Out</button>
+    </div>
+  </div>
+
+  <div class="admin-body">
+    <!-- NAV -->
+    <div class="admin-nav">
+      <div class="nav-section">Main</div>
+      <div class="nav-item active" onclick="showPage('dashboard')">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </div>
+      <div class="nav-item" onclick="showPage('add')">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        Add Product
+      </div>
+      <div class="nav-item" onclick="showPage('list')">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        All Products
+      </div>
+      <div class="nav-section">Manage</div>
+      <div class="nav-item" onclick="showPage('banners')">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 3h-8a2 2 0 0 0-2 2v2h12V5a2 2 0 0 0-2-2z"/></svg>
+        Banners
+      </div>
+      <div class="nav-item" onclick="showPage('brands')">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Brand Logos
+      </div>
+      <div class="nav-section">Settings</div>
+      <div class="nav-item" onclick="showPage('settings')">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Settings
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="admin-content">
+
+      <!-- DASHBOARD -->
+      <div class="page-section active" id="page-dashboard">
+        <div class="section-hd">
+          <h2>Dashboard</h2>
+          <button class="btn btn-primary" onclick="showPage('add')">+ Add Product</button>
+        </div>
+        <div class="stats-grid" id="stats-grid"></div>
+        <div class="form-card">
+          <div class="form-card-head"><h3>Recent Products</h3></div>
+          <div id="recent-list" style="padding:16px"></div>
+        </div>
+      </div>
+
+      <!-- ADD / EDIT PRODUCT -->
+      <div class="page-section" id="page-add">
+        <div class="section-hd">
+          <h2 id="form-title">Add New Product</h2>
+          <button class="btn btn-secondary" onclick="showPage('list')">Cancel</button>
+        </div>
+
+        <!-- PHOTOS -->
+        <div class="form-card">
+          <div class="form-card-head"><h3>📸 Product Photos</h3></div>
+          <div style="padding:20px">
+            <div class="photo-drop" id="drop-zone" ondragover="event.preventDefault();this.classList.add('over')" ondragleave="this.classList.remove('over')" ondrop="onDrop(event)">
+              <input type="file" accept="image/*" multiple onchange="onFileSelect(event)">
+              <div style="font-size:40px">📸</div>
+              <p><strong>Drag & drop photos here</strong> or click to browse</p>
+              <small>Upload multiple photos — JPG, PNG, WEBP up to 10MB each</small>
+            </div>
+            <div class="divider">OR paste image URL</div>
+            <div class="url-row">
+              <input type="text" class="form-input" id="url-input" placeholder="https://example.com/photo.jpg">
+              <button class="btn btn-secondary" onclick="addPhotoURL()">Add URL</button>
+            </div>
+            <div id="photo-previews" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:14px"></div>
+            <div style="font-size:11px;color:var(--muted);margin-top:8px">📌 First photo = main display photo &nbsp;|&nbsp; Click ✕ to remove &nbsp;|&nbsp; Click ★ to set as main</div>
+          </div>
+        </div>
+
+        <!-- DETAILS -->
+        <div class="form-card">
+          <div class="form-card-head"><h3>📋 Product Details</h3></div>
+          <div class="form-body">
+            <div class="form-group">
+              <label class="form-label">Name (English) <span>*</span></label>
+              <input type="text" class="form-input" id="f-name-en" placeholder="e.g. iPhone 16 Pro Max">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Name (Arabic)</label>
+              <input type="text" class="form-input" id="f-name-ar" placeholder="e.g. آيفون 16 برو ماكس" dir="rtl">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Brand <span>*</span></label>
+              <select class="form-select" id="f-brand">
+                <option value="">Select brand...</option>
+                <option>apple</option><option>samsung</option><option>huawei</option>
+                <option>xiaomi</option><option>oppo</option><option>vivo</option>
+                <option>realme</option><option>nokia</option><option>motorola</option>
+                <option>honor</option><option>other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Category <span>*</span></label>
+              <select class="form-select" id="f-cat">
+                <option value="">Select category...</option>
+                <option value="smartphones">Smartphones</option>
+                <option value="tablets">Tablets</option>
+                <option value="smartwatches">Smartwatches</option>
+                <option value="accessories">Accessories</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Price (OMR) <span>*</span></label>
+              <input type="number" class="form-input" id="f-price" placeholder="0.000" step="0.001" min="0">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Old Price (OMR) <small style="font-weight:400;color:var(--muted)">— for discount</small></label>
+              <input type="number" class="form-input" id="f-old-price" placeholder="0.000" step="0.001" min="0">
+            </div>
+            <div class="form-group full">
+              <label class="form-label">Description (English)</label>
+              <textarea class="form-textarea" id="f-desc-en" placeholder="Specs, features, what's in the box..."></textarea>
+            </div>
+            <div class="form-group full">
+              <label class="form-label">Description (Arabic)</label>
+              <textarea class="form-textarea" id="f-desc-ar" placeholder="وصف المنتج..." dir="rtl"></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Rating</label>
+              <div class="star-input">
+                <input type="radio" name="stars" id="s5" value="5"><label for="s5">★</label>
+                <input type="radio" name="stars" id="s4" value="4" checked><label for="s4">★</label>
+                <input type="radio" name="stars" id="s3" value="3"><label for="s3">★</label>
+                <input type="radio" name="stars" id="s2" value="2"><label for="s2">★</label>
+                <input type="radio" name="stars" id="s1" value="1"><label for="s1">★</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Tags</label>
+              <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:4px">
+                <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer"><input type="checkbox" id="f-new" style="accent-color:var(--green);width:15px;height:15px"> New Arrival</label>
+                <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer"><input type="checkbox" id="f-sale" style="accent-color:var(--accent);width:15px;height:15px"> On Sale</label>
+              </div>
+            </div>
+            <div class="form-group full">
+              <label class="form-label">Color / Storage Variants <small style="font-weight:400;color:var(--muted)">— add multiple colors or storage options</small></label>
+              <div class="color-variants-wrap" id="variants-wrap"></div>
+              <button type="button" class="btn-add-variant" onclick="addVariant()">+ Add Color / Storage Variant</button>
+              <div style="font-size:11px;color:var(--muted);margin-top:6px">e.g. Black 256GB, White 128GB, Blue 512GB — each with its own price and stock</div>
+            </div>
+            <div class="form-group full">
+              <label class="form-label">Stock Status</label>
+              <div class="stock-options">
+                <label class="stock-opt sel-in" id="lbl-in">
+                  <input type="radio" name="stock" id="f-instock" value="in" checked onchange="updateStockStyle()"> ✅ In Stock
+                </label>
+                <label class="stock-opt" id="lbl-out">
+                  <input type="radio" name="stock" id="f-soldout" value="out" onchange="updateStockStyle()"> 🚫 Sold Out
+                </label>
+              </div>
+              <div style="margin-top:10px">
+                <label class="form-label" style="margin-bottom:6px">Quantity</label>
+                <input type="number" class="form-input" id="f-qty" placeholder="e.g. 10" min="0" style="max-width:160px" oninput="autoStockFromQty(this.value)">
+                <div style="font-size:11px;color:var(--muted);margin-top:4px">Set to 0 → auto Sold Out</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PUBLISH -->
+        <div class="form-card">
+          <div class="form-card-head"><h3>🚀 Publication</h3></div>
+          <div style="padding:20px;display:flex;flex-direction:column;gap:16px">
+            <div class="toggle-wrap">
+              <label class="toggle"><input type="checkbox" id="f-publish" checked><span class="toggle-slider"></span></label>
+              <div>
+                <div style="font-size:14px;font-weight:600">Publish immediately</div>
+                <div style="font-size:12px;color:var(--muted)">Product will be visible on your shop</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <button class="btn btn-primary" onclick="saveProduct(false)">💾 Save & Publish</button>
+              <button class="btn btn-secondary" onclick="saveProduct(true)">📝 Save as Draft</button>
+            </div>
+          </div>
+        </div>
+        <input type="hidden" id="editing-id">
+      </div>
+
+      <!-- PRODUCT LIST -->
+      <div class="page-section" id="page-list">
+        <div class="section-hd">
+          <h2>All Products</h2>
+          <button class="btn btn-primary" onclick="showPage('add')">+ Add Product</button>
+        </div>
+        <div class="search-row">
+          <input type="text" class="admin-search" id="search-q" placeholder="🔍 Search..." oninput="renderList()">
+          <select class="filter-sel" id="filter-status" onchange="renderList()">
+            <option value="">All Status</option>
+            <option value="published">Published</option>
+            <option value="draft">Draft</option>
+          </select>
+          <select class="filter-sel" id="filter-brand" onchange="renderList()">
+            <option value="">All Brands</option>
+            <option>apple</option><option>samsung</option><option>huawei</option>
+            <option>xiaomi</option><option>oppo</option><option>vivo</option>
+            <option>realme</option><option>nokia</option><option>motorola</option><option>honor</option>
+          </select>
+        </div>
+        <div class="products-table">
+          <div class="tbl-head"><div>Photo</div><div>Product</div><div>Brand</div><div>Price</div><div>Status</div><div>Actions</div></div>
+          <div id="list-body"></div>
+        </div>
+      </div>
+
+      <!-- BANNERS -->
+      <div class="page-section" id="page-banners">
+        <div class="section-hd">
+          <h2>Homepage Banners</h2>
+          <button class="btn btn-primary" onclick="showBannerForm()">+ New Banner</button>
+        </div>
+
+        <!-- BANNER FORM (hidden by default) -->
+        <div class="form-card" id="banner-form-card" style="display:none">
+          <div class="form-card-head"><h3 id="banner-form-title">New Banner</h3></div>
+          <div class="form-body">
+            <div class="form-group">
+              <label class="form-label">Title (Main heading) <span>*</span></label>
+              <input type="text" class="form-input" id="b-title" placeholder="e.g. iPhone 16 Pro Max — Now Available!">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Subtitle</label>
+              <input type="text" class="form-input" id="b-sub" placeholder="e.g. Starting from 389 OMR with free delivery">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Button Text</label>
+              <input type="text" class="form-input" id="b-btn" placeholder="e.g. Shop Now">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Button Link</label>
+              <input type="text" class="form-input" id="b-link" placeholder="e.g. products.html?brand=apple">
+            </div>
+            <div class="form-group full">
+              <label class="form-label">Banner Background</label>
+              <div style="font-size:12px;color:var(--muted);margin-bottom:8px">Pick a color or upload/paste a background image</div>
+              <div class="color-opts" id="color-opts">
+                <div class="color-opt selected" style="background:linear-gradient(135deg,#1a1a2e,#0f3460)" data-color="linear-gradient(135deg,#1a1a2e,#0f3460)" onclick="selectColor(this)"></div>
+                <div class="color-opt" style="background:linear-gradient(135deg,#e63946,#c1121f)" data-color="linear-gradient(135deg,#e63946,#c1121f)" onclick="selectColor(this)"></div>
+                <div class="color-opt" style="background:linear-gradient(135deg,#1428A0,#0a1a6b)" data-color="linear-gradient(135deg,#1428A0,#0a1a6b)" onclick="selectColor(this)"></div>
+                <div class="color-opt" style="background:linear-gradient(135deg,#065f46,#047857)" data-color="linear-gradient(135deg,#065f46,#047857)" onclick="selectColor(this)"></div>
+                <div class="color-opt" style="background:linear-gradient(135deg,#7c3aed,#4f46e5)" data-color="linear-gradient(135deg,#7c3aed,#4f46e5)" onclick="selectColor(this)"></div>
+                <div class="color-opt" style="background:linear-gradient(135deg,#b45309,#d97706)" data-color="linear-gradient(135deg,#b45309,#d97706)" onclick="selectColor(this)"></div>
+                <div class="color-opt" style="background:linear-gradient(135deg,#be185d,#9d174d)" data-color="linear-gradient(135deg,#be185d,#9d174d)" onclick="selectColor(this)"></div>
+              </div>
+              <div style="margin-top:10px;display:flex;gap:8px;align-items:center">
+                <input type="text" class="form-input" id="b-bg-url" placeholder="Or paste background image URL..." oninput="updateBannerPreview()">
+                <label style="background:var(--bg);border:1.5px solid var(--border);border-radius:9px;padding:9px 14px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:6px">
+                  <input type="file" accept="image/*" style="display:none" onchange="uploadBannerBg(event)"> 📁 Upload
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Badge Text <small style="font-weight:400;color:var(--muted)">top label</small></label>
+              <input type="text" class="form-input" id="b-badge" placeholder="e.g. New Arrival 2025">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Status</label>
+              <div class="toggle-wrap" style="margin-top:6px">
+                <label class="toggle"><input type="checkbox" id="b-active" checked><span class="toggle-slider"></span></label>
+                <span style="font-size:14px;font-weight:500">Active (show on homepage)</span>
+              </div>
+            </div>
+            <div class="form-group full">
+              <label class="form-label">Live Preview</label>
+              <div class="banner-preview-box" id="banner-preview-box" style="background:linear-gradient(135deg,#1a1a2e,#0f3460)">
+                <div style="font-size:11px;font-weight:700;background:rgba(255,255,255,.15);display:inline-block;padding:3px 12px;border-radius:20px;margin-bottom:10px" id="prev-badge">New Arrival 2025</div>
+                <h3 id="prev-title">Banner Title</h3>
+                <p id="prev-sub">Subtitle text appears here</p>
+                <div class="preview-btn" id="prev-btn">Shop Now</div>
+              </div>
+            </div>
+          </div>
+          <div style="padding:20px;display:flex;gap:10px">
+            <button class="btn btn-primary" onclick="saveBanner()">💾 Save Banner</button>
+            <button class="btn btn-secondary" onclick="hideBannerForm()">Cancel</button>
+          </div>
+          <input type="hidden" id="b-editing-id">
+          <input type="hidden" id="b-bg-data">
+        </div>
+
+        <!-- BANNER LIST -->
+        <div class="form-card">
+          <div class="form-card-head"><h3>Active Banners <span style="font-size:12px;font-weight:400;color:var(--muted);margin-left:8px">Shown as slideshow on homepage</span></h3></div>
+          <div id="banner-list"><div class="empty-state"><div>🖼️</div><p>No banners yet — add your first one above</p></div></div>
+        </div>
+      </div>
+
+      <!-- BRAND LOGOS -->
+      <div class="page-section" id="page-brands">
+        <div class="section-hd"><h2>Brand Logos</h2><span style="font-size:13px;color:var(--muted)">Click any logo to upload</span></div>
+        <div class="form-card">
+          <div class="form-card-head"><h3>Click a logo to change it — like a profile photo</h3></div>
+          <div class="brand-logo-grid" id="brand-logo-grid"></div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="page-section" id="page-settings">
+        <div class="section-hd"><h2>Settings</h2></div>
+        <div class="form-card settings-wrap">
+          <div class="form-card-head"><h3>🔐 Change Password</h3></div>
+          <div class="form-body" style="grid-template-columns:1fr">
+            <div class="form-group"><label class="form-label">Current Password</label><input type="password" class="form-input" id="pw-cur" placeholder="Current password"></div>
+            <div class="form-group"><label class="form-label">New Password</label><input type="password" class="form-input" id="pw-new" placeholder="New password"></div>
+            <div class="form-group"><label class="form-label">Confirm New Password</label><input type="password" class="form-input" id="pw-cfm" placeholder="Confirm password"></div>
+            <div class="form-group"><button class="btn btn-primary" onclick="changePW()">Update Password</button></div>
+          </div>
+        </div>
+        <div class="form-card settings-wrap" style="margin-top:16px">
+          <div class="form-card-head"><h3>⚠️ Danger Zone</h3></div>
+          <div style="padding:20px">
+            <p style="font-size:14px;color:var(--muted);margin-bottom:14px">Delete all admin-added products permanently.</p>
+            <button class="btn btn-danger" onclick="confirmDeleteAll()">Delete All Products</button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /admin-content -->
+  </div><!-- /admin-body -->
+</div><!-- /admin-screen -->
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <h3 id="modal-title">Confirm</h3>
+    <p id="modal-body">Are you sure?</p>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-danger" id="modal-ok">Delete</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── AUTH ──────────────────────────────────────────────────
+const UNAME = 'bbcmobile';
+function getPW() { return localStorage.getItem('bbc_pw') || 'bbc2025'; }
+
+function doLogin() {
+  const u = document.getElementById('login-user').value.trim();
+  const p = document.getElementById('login-pass').value;
+  if (u === UNAME && p === getPW()) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-screen').style.display = 'block';
+    renderDashboard();
+    renderList();
+  } else {
+    const e = document.getElementById('login-error');
+    e.style.display = 'block';
+    setTimeout(() => e.style.display='none', 3000);
+  }
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    const ls = document.getElementById('login-screen');
+    if (ls && ls.style.display !== 'none') doLogin();
+  }
+});
+
+function doLogout() {
+  document.getElementById('admin-screen').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('login-user').value = '';
+  document.getElementById('login-pass').value = '';
+}
+
+function changePW() {
+  const cur = document.getElementById('pw-cur').value;
+  const nw  = document.getElementById('pw-new').value;
+  const cf  = document.getElementById('pw-cfm').value;
+  if (cur !== getPW()) return toast('❌ Current password wrong');
+  if (nw.length < 4)   return toast('❌ Password too short (min 4 chars)');
+  if (nw !== cf)       return toast('❌ Passwords do not match');
+  localStorage.setItem('bbc_pw', nw);
+  document.getElementById('pw-cur').value = document.getElementById('pw-new').value = document.getElementById('pw-cfm').value = '';
+  toast('✅ Password updated!');
+}
+
+// ── NAVIGATION ────────────────────────────────────────────
+function showPage(id) {
+  document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => {
+    if ((n.getAttribute('onclick')||'').includes("'" + id + "'")) n.classList.add('active');
+  });
+  if (id === 'dashboard') renderDashboard();
+  if (id === 'list')      renderList();
+  if (id === 'brands')    renderBrandLogos();
+  if (id === 'banners')   { renderBannerList(); }
+  if (id === 'add')       { clearForm(); document.getElementById('form-title').textContent = 'Add New Product'; }
+  window.scrollTo(0, 0);
+}
+
+// ── STORAGE ───────────────────────────────────────────────
+function getProds()     { return JSON.parse(localStorage.getItem('bbc_admin_products') || '[]'); }
+function saveProds(arr) { localStorage.setItem('bbc_admin_products', JSON.stringify(arr)); }
+function nextId()       { const p = getProds(); return p.length ? Math.max(...p.map(x=>x.id))+1 : 1001; }
+function getOverrides() { return JSON.parse(localStorage.getItem('bbc_stock_overrides') || '{}'); }
+function saveOverrides(o){ localStorage.setItem('bbc_stock_overrides', JSON.stringify(o)); }
+function getBrandLogos(){ return JSON.parse(localStorage.getItem('bbc_brand_logos') || '{}'); }
+function saveBrandLogos(o){ localStorage.setItem('bbc_brand_logos', JSON.stringify(o)); }
+
+// ── PHOTO HANDLING ────────────────────────────────────────
+let photos = [];
+
+function onDrop(e) {
+  e.preventDefault();
+  document.getElementById('drop-zone').classList.remove('over');
+  Array.from(e.dataTransfer.files).filter(f=>f.type.startsWith('image/')).forEach(readImg);
+}
+function onFileSelect(e) { Array.from(e.target.files).forEach(readImg); }
+function readImg(file) {
+  if (file.size > 10*1024*1024) return toast('❌ File too large (max 10MB)');
+  const r = new FileReader();
+  r.onload = ev => { photos.push(ev.target.result); renderPreviews(); };
+  r.readAsDataURL(file);
+}
+function addPhotoURL() {
+  const url = document.getElementById('url-input').value.trim();
+  if (!url.startsWith('http')) return toast('❌ Enter a valid URL');
+  photos.push(url);
+  document.getElementById('url-input').value = '';
+  renderPreviews();
+}
+function removePhoto(i) { photos.splice(i,1); renderPreviews(); }
+function renderPreviews() {
+  const wrap = document.getElementById('photo-previews');
+  if (!photos.length) { wrap.innerHTML = ''; return; }
+  wrap.innerHTML = photos.map((src,i) => `
+    <div style="position:relative;width:90px;flex-shrink:0">
+      <div style="width:90px;height:90px;border-radius:10px;overflow:hidden;border:2px solid ${i===0?'var(--accent)':'var(--border)'};background:var(--bg)">
+        <img src="${src}" style="width:100%;height:100%;object-fit:cover" alt="photo ${i+1}">
+      </div>
+      ${i===0?`<div style="position:absolute;bottom:0;left:0;right:0;background:var(--accent);color:#fff;font-size:9px;font-weight:700;text-align:center;padding:2px;border-radius:0 0 8px 8px">MAIN</div>`:''}
+      <button onclick="removePhoto(${i})" style="position:absolute;top:3px;right:3px;background:rgba(0,0,0,.65);color:#fff;border:none;border-radius:50%;width:20px;height:20px;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center">✕</button>
+      ${i>0?`<button onclick="setMainPhoto(${i})" style="position:absolute;top:3px;left:3px;background:rgba(255,165,0,.85);color:#fff;border:none;border-radius:50%;width:20px;height:20px;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center" title="Set as main photo">★</button>`:''}
+    </div>
+  `).join('');
+}
+
+function setMainPhoto(i) {
+  const main = photos.splice(i, 1)[0];
+  photos.unshift(main);
+  renderPreviews();
+  toast('✅ Main photo updated!');
+}
+
+// ── STOCK ─────────────────────────────────────────────────
+function updateStockStyle() {
+  const out = document.getElementById('f-soldout').checked;
+  document.getElementById('lbl-in').className  = 'stock-opt' + (out?'':' sel-in');
+  document.getElementById('lbl-out').className = 'stock-opt' + (out?' sel-out':'');
+}
+function autoStockFromQty(v) {
+  const qty = parseInt(v);
+  if (!isNaN(qty) && qty === 0) { document.getElementById('f-soldout').checked = true; }
+  else if (!isNaN(qty) && qty > 0) { document.getElementById('f-instock').checked = true; }
+  updateStockStyle();
+}
+
+// ── FORM ──────────────────────────────────────────────────
+function clearForm() {
+  ['f-name-en','f-name-ar','f-price','f-old-price','f-desc-en','f-desc-ar','f-qty','url-input','editing-id'].forEach(id => {
+    const el = document.getElementById(id); if(el) el.value='';
+  });
+  document.getElementById('f-brand').value = '';
+  document.getElementById('f-cat').value = '';
+  document.getElementById('f-new').checked = false;
+  document.getElementById('f-sale').checked = false;
+  document.getElementById('f-instock').checked = true;
+  document.getElementById('f-publish').checked = true;
+  document.getElementById('s4').checked = true;
+  updateStockStyle();
+  photos = [];
+  renderPreviews();
+  variants = [];
+  renderVariants();
+}
+
+function getFormData() {
+  const star = document.querySelector('input[name="stars"]:checked');
+  return {
+    nameEn:  document.getElementById('f-name-en').value.trim(),
+    nameAr:  document.getElementById('f-name-ar').value.trim(),
+    brand:   document.getElementById('f-brand').value,
+    cat:     document.getElementById('f-cat').value,
+    price:   parseFloat(document.getElementById('f-price').value)||0,
+    oldPrice:parseFloat(document.getElementById('f-old-price').value)||null,
+    descEn:  document.getElementById('f-desc-en').value.trim(),
+    descAr:  document.getElementById('f-desc-ar').value.trim(),
+    stars:   star?parseInt(star.value):4,
+    isNew:   document.getElementById('f-new').checked,
+    isSale:  document.getElementById('f-sale').checked,
+    soldOut: document.getElementById('f-soldout').checked,
+    stockQty:parseInt(document.getElementById('f-qty').value)||null,
+    photos:  [...photos],
+    variants: variants.map(v => ({...v})),
+  };
+}
+
+function saveProduct(asDraft) {
+  const data = getFormData();
+  if (!data.nameEn) return toast('❌ Product name is required');
+  if (!data.brand)  return toast('❌ Please select a brand');
+  if (!data.cat)    return toast('❌ Please select a category');
+  if (!data.price)  return toast('❌ Please enter a price');
+  data.status = asDraft ? 'draft' : (document.getElementById('f-publish').checked ? 'published' : 'draft');
+  data.updatedAt = new Date().toISOString();
+  const prods = getProds();
+  const eid = document.getElementById('editing-id').value;
+  if (eid) {
+    const i = prods.findIndex(p => p.id == eid);
+    if (i>-1) prods[i] = {...prods[i], ...data};
+  } else {
+    data.id = nextId();
+    data.createdAt = new Date().toISOString();
+    prods.unshift(data);
+  }
+  // Also update stock override
+  const overrides = getOverrides();
+  const id = eid || data.id;
+  overrides[id] = data.soldOut;
+  saveOverrides(overrides);
+  saveProds(prods);
+  toast(asDraft ? '📝 Saved as draft' : '✅ Product published!');
+  clearForm();
+  showPage('list');
+}
+
+function editProduct(id) {
+  const p = getProds().find(x=>x.id==id);
+  if (!p) return;
+  showPage('add');
+  document.getElementById('form-title').textContent = 'Edit Product';
+  document.getElementById('editing-id').value = id;
+  document.getElementById('f-name-en').value  = p.nameEn||'';
+  document.getElementById('f-name-ar').value  = p.nameAr||'';
+  document.getElementById('f-brand').value    = p.brand||'';
+  document.getElementById('f-cat').value      = p.cat||'';
+  document.getElementById('f-price').value    = p.price||'';
+  document.getElementById('f-old-price').value= p.oldPrice||'';
+  document.getElementById('f-desc-en').value  = p.descEn||'';
+  document.getElementById('f-desc-ar').value  = p.descAr||'';
+  document.getElementById('f-new').checked    = !!p.isNew;
+  document.getElementById('f-sale').checked   = !!p.isSale;
+  document.getElementById('f-publish').checked= p.status==='published';
+  document.getElementById('f-qty').value      = p.stockQty||'';
+  if (p.soldOut) document.getElementById('f-soldout').checked = true;
+  else document.getElementById('f-instock').checked = true;
+  updateStockStyle();
+  const star = document.getElementById('s'+(p.stars||4));
+  if (star) star.checked = true;
+  photos = p.photos ? [...p.photos] : [];
+  renderPreviews();
+  variants = p.variants ? p.variants.map(v=>({...v})) : [];
+  renderVariants();
+}
+
+function toggleStatus(id) {
+  const prods = getProds();
+  const p = prods.find(x=>x.id==id);
+  if (!p) return;
+  p.status = p.status==='published'?'draft':'published';
+  p.updatedAt = new Date().toISOString();
+  saveProds(prods);
+  renderList(); renderDashboard();
+  toast(p.status==='published'?'✅ Published!':'📝 Moved to draft');
+}
+
+function toggleSoldOut(id) {
+  const overrides = getOverrides();
+  const prods = getProds();
+  const p = prods.find(x=>x.id==id);
+  const cur = overrides[id] !== undefined ? overrides[id] : (p?.soldOut||false);
+  const next = !cur;
+  overrides[id] = next;
+  saveOverrides(overrides);
+  if (p) { p.soldOut=next; if(next) p.stockQty=0; p.updatedAt=new Date().toISOString(); saveProds(prods); }
+  renderList(); renderDashboard();
+  toast(next?'🚫 Marked as Sold Out':'✅ Back In Stock!');
+}
+
+let delId = null;
+function deleteProduct(id) {
+  delId = id;
+  const p = getProds().find(x=>x.id==id);
+  document.getElementById('modal-title').textContent = 'Delete Product?';
+  document.getElementById('modal-body').textContent = `"${p?.nameEn||'This product'}" will be permanently deleted.`;
+  document.getElementById('modal-ok').onclick = () => {
+    saveProds(getProds().filter(x=>x.id!=delId));
+    closeModal(); renderList(); renderDashboard();
+    toast('🗑️ Deleted');
+  };
+  document.getElementById('modal').classList.add('open');
+}
+
+function confirmDeleteAll() {
+  document.getElementById('modal-title').textContent = 'Delete All Products?';
+  document.getElementById('modal-body').textContent = 'All products will be permanently deleted.';
+  document.getElementById('modal-ok').onclick = () => {
+    saveProds([]); closeModal(); renderList(); renderDashboard();
+    toast('🗑️ All deleted');
+  };
+  document.getElementById('modal').classList.add('open');
+}
+
+function closeModal() { document.getElementById('modal').classList.remove('open'); }
+
+// ── RENDER LIST ───────────────────────────────────────────
+const EMOJIS = {apple:'🍎',samsung:'🌀',huawei:'📡',xiaomi:'⚡',oppo:'🟢',vivo:'🔵',realme:'🔴',nokia:'📟',motorola:'〽️',honor:'🏅',other:'📱'};
+
+function renderList() {
+  const q  = (document.getElementById('search-q')?.value||'').toLowerCase();
+  const st = document.getElementById('filter-status')?.value||'';
+  const br = document.getElementById('filter-brand')?.value||'';
+  const overrides = getOverrides();
+  let list = getProds();
+  if (q)  list = list.filter(p=>(p.nameEn||'').toLowerCase().includes(q)||(p.nameAr||'').includes(q));
+  if (st) list = list.filter(p=>p.status===st);
+  if (br) list = list.filter(p=>p.brand===br);
+  const body = document.getElementById('list-body');
+  if (!body) return;
+  if (!list.length) {
+    body.innerHTML = '<div class="empty-state"><div>📦</div><p>No products yet</p><button class="btn btn-primary" onclick="showPage(\'add\')">Add your first product</button></div>';
+    return;
+  }
+  body.innerHTML = list.map(p => {
+    const thumb = p.photos&&p.photos.length ? p.photos[0] : null;
+    const pub   = p.status==='published';
+    const sold  = overrides[p.id]!==undefined ? overrides[p.id] : (p.soldOut||false);
+    return `
+    <div class="tbl-row">
+      <div>${thumb
+        ?`<img src="${thumb}" class="prod-thumb" alt="${p.nameEn}">`
+        :`<div class="prod-thumb-ph">${EMOJIS[p.brand]||'📱'}</div>`}</div>
+      <div><div class="prod-name">${p.nameEn||'—'}</div><div class="prod-brand-lbl">${p.cat||''}</div></div>
+      <div style="font-size:13px;font-weight:600;text-transform:capitalize">${p.brand||'—'}</div>
+      <div style="font-size:13px;font-weight:700;color:var(--accent)">${p.price?.toFixed(3)||'—'} <span style="font-size:10px;font-weight:400;color:var(--muted)">OMR</span></div>
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <span class="status-badge ${pub?'s-pub':'s-dft'}">${pub?'● Published':'○ Draft'}</span>
+        ${sold?'<span class="status-badge s-out">🚫 Sold Out</span>':''}
+      </div>
+      <div class="tbl-actions">
+        <button class="btn btn-secondary btn-sm" onclick="editProduct(${p.id})" title="Edit">✏️</button>
+        <button class="btn btn-sm ${pub?'btn-secondary':'btn-green'}" onclick="toggleStatus(${p.id})" title="${pub?'Unpublish':'Publish'}">${pub?'⏸':'▶'}</button>
+        <button class="btn btn-sm" onclick="toggleSoldOut(${p.id})" style="background:${sold?'#d1fae5':'#fee2e2'};color:${sold?'#065f46':'#dc2626'};border:none" title="${sold?'In Stock':'Sold Out'}">${sold?'✅':'🚫'}</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteProduct(${p.id})" title="Delete">🗑</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── DASHBOARD ─────────────────────────────────────────────
+function renderDashboard() {
+  const prods = getProds();
+  const pub   = prods.filter(p=>p.status==='published').length;
+  const draft = prods.filter(p=>p.status==='draft').length;
+  const brands= [...new Set(prods.map(p=>p.brand))].length;
+  const overrides = getOverrides();
+  const sold  = prods.filter(p=>overrides[p.id]||p.soldOut).length;
+  const sg = document.getElementById('stats-grid');
+  if (sg) sg.innerHTML = [
+    {icon:'📦',val:prods.length,lbl:'Total Products',bg:'#dbeafe'},
+    {icon:'✅',val:pub,         lbl:'Published',      bg:'#d1fae5'},
+    {icon:'📝',val:draft,       lbl:'Drafts',         bg:'#f3f4f6'},
+    {icon:'🚫',val:sold,        lbl:'Sold Out',       bg:'#fee2e2'},
+  ].map(s=>`<div class="stat-card"><div class="stat-icon" style="background:${s.bg}">${s.icon}</div><div><div class="stat-val">${s.val}</div><div class="stat-lbl">${s.lbl}</div></div></div>`).join('');
+
+  const rl = document.getElementById('recent-list');
+  if (rl) {
+    const recent = prods.slice(0,5);
+    if (!recent.length) { rl.innerHTML='<div class="empty-state"><div>📦</div><p>No products yet</p><button class="btn btn-primary" onclick="showPage(\'add\')">Add your first product</button></div>'; return; }
+    rl.innerHTML = recent.map(p=>`
+      <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)">
+        ${p.photos&&p.photos.length?`<img src="${p.photos[0]}" style="width:42px;height:42px;border-radius:8px;object-fit:cover;border:1px solid var(--border)">`:`<div style="width:42px;height:42px;border-radius:8px;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:20px">${EMOJIS[p.brand]||'📱'}</div>`}
+        <div style="flex:1"><div style="font-size:13px;font-weight:600">${p.nameEn||'—'}</div><div style="font-size:11px;color:var(--muted)">${p.price?.toFixed(3)||'—'} OMR</div></div>
+        <span class="status-badge ${p.status==='published'?'s-pub':'s-dft'}">${p.status==='published'?'Published':'Draft'}</span>
+        <button class="btn btn-secondary btn-sm" onclick="editProduct(${p.id})">Edit</button>
+      </div>`).join('');
+  }
+}
+
+
+// ── BANNERS ───────────────────────────────────────────────
+function getBanners() { return JSON.parse(localStorage.getItem('bbc_banners')||'[]'); }
+function saveBanners(b) { localStorage.setItem('bbc_banners', JSON.stringify(b)); }
+
+let selectedBannerBg = 'linear-gradient(135deg,#1a1a2e,#0f3460)';
+
+function showBannerForm(id) {
+  const card = document.getElementById('banner-form-card');
+  card.style.display = 'block';
+  card.scrollIntoView({behavior:'smooth', block:'start'});
+  if (id) {
+    const b = getBanners().find(x=>x.id===id);
+    if (!b) return;
+    document.getElementById('banner-form-title').textContent = 'Edit Banner';
+    document.getElementById('b-editing-id').value = id;
+    document.getElementById('b-title').value  = b.title||'';
+    document.getElementById('b-sub').value    = b.sub||'';
+    document.getElementById('b-btn').value    = b.btnText||'';
+    document.getElementById('b-link').value   = b.link||'';
+    document.getElementById('b-badge').value  = b.badge||'';
+    document.getElementById('b-active').checked = b.active!==false;
+    document.getElementById('b-bg-url').value = b.bgUrl||'';
+    selectedBannerBg = b.bg || 'linear-gradient(135deg,#1a1a2e,#0f3460)';
+    document.getElementById('b-bg-data').value = b.bgData||'';
+  } else {
+    document.getElementById('banner-form-title').textContent = 'New Banner';
+    document.getElementById('b-editing-id').value = '';
+    ['b-title','b-sub','b-btn','b-link','b-badge','b-bg-url'].forEach(id=>{document.getElementById(id).value='';});
+    document.getElementById('b-active').checked = true;
+    document.getElementById('b-bg-data').value = '';
+    selectedBannerBg = 'linear-gradient(135deg,#1a1a2e,#0f3460)';
+    document.querySelectorAll('.color-opt').forEach((el,i)=>el.classList.toggle('selected',i===0));
+  }
+  updateBannerPreview();
+}
+
+function hideBannerForm() {
+  document.getElementById('banner-form-card').style.display = 'none';
+}
+
+function selectColor(el) {
+  document.querySelectorAll('.color-opt').forEach(e=>e.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedBannerBg = el.dataset.color;
+  document.getElementById('b-bg-url').value = '';
+  document.getElementById('b-bg-data').value = '';
+  updateBannerPreview();
+}
+
+function uploadBannerBg(e) {
+  const file = e.target.files[0]; if(!file) return;
+  if(file.size > 5*1024*1024) return toast('❌ Max 5MB');
+  const r = new FileReader();
+  r.onload = ev => {
+    document.getElementById('b-bg-data').value = ev.target.result;
+    document.getElementById('b-bg-url').value = '';
+    selectedBannerBg = null;
+    updateBannerPreview();
+  };
+  r.readAsDataURL(file);
+}
+
+function updateBannerPreview() {
+  const box    = document.getElementById('banner-preview-box');
+  const bgData = document.getElementById('b-bg-data').value;
+  const bgUrl  = document.getElementById('b-bg-url').value.trim();
+  const title  = document.getElementById('b-title').value || 'Banner Title';
+  const sub    = document.getElementById('b-sub').value   || 'Subtitle text appears here';
+  const btn    = document.getElementById('b-btn').value   || 'Shop Now';
+  const badge  = document.getElementById('b-badge').value || 'New Arrival 2025';
+  document.getElementById('prev-title').textContent = title;
+  document.getElementById('prev-sub').textContent   = sub;
+  document.getElementById('prev-btn').textContent   = btn;
+  document.getElementById('prev-badge').textContent = badge;
+  if (bgData) {
+    box.style.background = `url('${bgData}') center/cover no-repeat`;
+    box.style.backgroundBlendMode = 'multiply';
+    box.style.backgroundColor = 'rgba(0,0,0,0.45)';
+  } else if (bgUrl) {
+    box.style.background = `url('${bgUrl}') center/cover no-repeat`;
+    box.style.backgroundBlendMode = 'multiply';
+    box.style.backgroundColor = 'rgba(0,0,0,0.45)';
+  } else {
+    box.style.background = selectedBannerBg || 'linear-gradient(135deg,#1a1a2e,#0f3460)';
+    box.style.backgroundColor = '';
+    box.style.backgroundBlendMode = '';
+  }
+}
+
+// Live preview on typing
+['b-title','b-sub','b-btn','b-badge','b-bg-url'].forEach(id=>{
+  const el = document.getElementById(id);
+  if(el) el.addEventListener('input', updateBannerPreview);
+});
+
+function saveBanner() {
+  const title = document.getElementById('b-title').value.trim();
+  if (!title) return toast('❌ Title is required');
+  const banners = getBanners();
+  const eid = document.getElementById('b-editing-id').value;
+  const bgData = document.getElementById('b-bg-data').value;
+  const bgUrl  = document.getElementById('b-bg-url').value.trim();
+  const banner = {
+    id:     eid || Date.now().toString(),
+    title,
+    sub:    document.getElementById('b-sub').value.trim(),
+    btnText:document.getElementById('b-btn').value.trim() || 'Shop Now',
+    link:   document.getElementById('b-link').value.trim() || 'products.html',
+    badge:  document.getElementById('b-badge').value.trim(),
+    bg:     selectedBannerBg,
+    bgData: bgData||null,
+    bgUrl:  bgUrl||null,
+    active: document.getElementById('b-active').checked,
+    updatedAt: new Date().toISOString(),
+  };
+  if (eid) {
+    const i = banners.findIndex(b=>b.id===eid);
+    if(i>-1) banners[i]=banner; else banners.push(banner);
+  } else {
+    banners.push(banner);
+  }
+  saveBanners(banners);
+  hideBannerForm();
+  renderBannerList();
+  toast('✅ Banner saved!');
+}
+
+function deleteBanner(id) {
+  if (!confirm('Delete this banner?')) return;
+  saveBanners(getBanners().filter(b=>b.id!==id));
+  renderBannerList();
+  toast('🗑️ Banner deleted');
+}
+
+function toggleBannerActive(id) {
+  const banners = getBanners();
+  const b = banners.find(x=>x.id===id);
+  if (!b) return;
+  b.active = !b.active;
+  saveBanners(banners);
+  renderBannerList();
+  toast(b.active ? '✅ Banner activated' : '⏸ Banner hidden');
+}
+
+function renderBannerList() {
+  const list = document.getElementById('banner-list');
+  if (!list) return;
+  const banners = getBanners();
+  if (!banners.length) {
+    list.innerHTML = '<div class="empty-state"><div>🖼️</div><p>No banners yet</p></div>';
+    return;
+  }
+  list.innerHTML = '<div class="banner-list">' + banners.map(b=>{
+    const bg = b.bgData ? `url('${b.bgData}') center/cover` : b.bgUrl ? `url('${b.bgUrl}') center/cover` : (b.bg||'#1a1a2e');
+    return `
+    <div class="banner-item ${b.active?'':'inactive'}">
+      <div class="banner-preview" style="background:${bg}">
+        ${(!b.bgData&&!b.bgUrl)?'🖼️':''}
+      </div>
+      <div class="banner-info">
+        <div class="banner-title-text">${b.title}</div>
+        <div class="banner-sub-text">${b.sub||'—'}</div>
+        <span class="banner-badge ${b.active?'active':'inactive'}">${b.active?'● Active':'○ Hidden'}</span>
+      </div>
+      <div class="banner-actions">
+        <button class="btn btn-secondary btn-sm" onclick="showBannerForm('${b.id}')">✏️ Edit</button>
+        <button class="btn btn-sm" onclick="toggleBannerActive('${b.id}')" style="background:${b.active?'#fee2e2':'#d1fae5'};color:${b.active?'#dc2626':'#065f46'};border:none">${b.active?'⏸':'▶'}</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteBanner('${b.id}')">🗑</button>
+      </div>
+    </div>`;
+  }).join('') + '</div>';
+}
+
+
+// ── COLOR / STORAGE VARIANTS ──────────────────────────────
+let variants = []; // [{id, name, color, price, stock, photo}]
+
+function addVariant(v) {
+  const id = Date.now() + Math.random();
+  const variant = v || { id, name:'', color:'#1a1a2e', price:'', stock:'', photo:null };
+  if (!v) variants.push(variant);
+  renderVariants();
+}
+
+function removeVariant(id) {
+  variants = variants.filter(v => v.id != id);
+  renderVariants();
+}
+
+function renderVariants() {
+  const wrap = document.getElementById('variants-wrap');
+  if (!wrap) return;
+  if (!variants.length) { wrap.innerHTML = ''; return; }
+  wrap.innerHTML = variants.map((v,i) => `
+    <div class="variant-row" id="vrow-${v.id}">
+      <!-- Color swatch -->
+      <div class="variant-color-preview" style="background:${v.color}" title="Pick color"
+        onclick="document.getElementById('vcolor-${v.id}').click()"></div>
+      <input type="color" id="vcolor-${v.id}" value="${v.color}" style="display:none"
+        oninput="updateVariantColor(${v.id},this.value)">
+      <!-- Name -->
+      <input type="text" class="variant-name" placeholder="e.g. Black 256GB" value="${v.name}"
+        oninput="updateVariant(${v.id},'name',this.value)">
+      <!-- Price override -->
+      <input type="number" class="variant-price" placeholder="Price OMR" value="${v.price||''}" step="0.001" min="0"
+        oninput="updateVariant(${v.id},'price',this.value)" title="Price (leave blank to use main price)">
+      <!-- Stock -->
+      <input type="number" class="variant-stock" placeholder="Stock" value="${v.stock||''}" min="0"
+        oninput="updateVariant(${v.id},'stock',this.value)" title="Quantity in stock">
+      <!-- Photo -->
+      <div class="variant-photo-wrap" title="Upload photo for this variant">
+        ${v.photo
+          ? `<img src="${v.photo}" class="variant-photo-thumb" onclick="document.getElementById('vphoto-${v.id}').click()">`
+          : `<div class="variant-photo-ph" onclick="document.getElementById('vphoto-${v.id}').click()">📷</div>`}
+        <input type="file" id="vphoto-${v.id}" accept="image/*" style="display:none"
+          onchange="uploadVariantPhoto(${v.id},event)">
+      </div>
+      <!-- Remove -->
+      <button class="variant-remove" onclick="removeVariant(${v.id})" title="Remove">✕</button>
+    </div>
+  `).join('');
+}
+
+function updateVariant(id, field, value) {
+  const v = variants.find(x => x.id == id);
+  if (v) v[field] = value;
+}
+
+function updateVariantColor(id, color) {
+  const v = variants.find(x => x.id == id);
+  if (v) {
+    v.color = color;
+    const swatch = document.querySelector(`#vrow-${id} .variant-color-preview`);
+    if (swatch) swatch.style.background = color;
+  }
+}
+
+function uploadVariantPhoto(id, e) {
+  const file = e.target.files[0]; if(!file) return;
+  if (file.size > 5*1024*1024) return toast('❌ Max 5MB');
+  const r = new FileReader();
+  r.onload = ev => {
+    const v = variants.find(x => x.id == id);
+    if (v) { v.photo = ev.target.result; renderVariants(); }
+  };
+  r.readAsDataURL(file);
+}
+
+function clearVariants() { variants = []; renderVariants(); }
+
+// ── BRAND LOGOS ───────────────────────────────────────────
+const ALL_BRANDS = [
+  {id:'apple',name:'Apple',emoji:'🍎'},{id:'samsung',name:'Samsung',emoji:'🌀'},
+  {id:'huawei',name:'Huawei',emoji:'📡'},{id:'xiaomi',name:'Xiaomi',emoji:'⚡'},
+  {id:'oppo',name:'OPPO',emoji:'🟢'},{id:'vivo',name:'Vivo',emoji:'🔵'},
+  {id:'realme',name:'Realme',emoji:'🔴'},{id:'nokia',name:'Nokia',emoji:'📟'},
+  {id:'motorola',name:'Motorola',emoji:'〽️'},{id:'honor',name:'Honor',emoji:'🏅'},
+];
+
+function renderBrandLogos() {
+  const logos = getBrandLogos();
+  const prods = getProds();
+  const grid  = document.getElementById('brand-logo-grid');
+  if (!grid) return;
+  grid.innerHTML = ALL_BRANDS.map(b => {
+    const logo  = logos[b.id];
+    const count = prods.filter(p=>p.brand===b.id).length;
+    return `
+    <div class="blc">
+      <div class="blc-img-wrap" onclick="document.getElementById('bli-${b.id}').click()">
+        ${logo?`<img src="${logo}" class="blc-img" alt="${b.name}">`:`<div class="blc-emoji">${b.emoji}</div>`}
+        <div class="blc-hover"><span>📷 Change</span></div>
+      </div>
+      <input type="file" accept="image/*" id="bli-${b.id}" style="display:none" onchange="uploadBrandLogo('${b.id}',event)">
+      <div class="blc-name">${b.name}</div>
+      <div class="blc-count">${count} product${count!==1?'s':''}</div>
+      <div class="blc-url-row">
+        <input type="text" class="blc-url" id="blu-${b.id}" placeholder="Paste URL...">
+        <button class="btn btn-secondary btn-sm" onclick="setBrandLogoURL('${b.id}')">Set</button>
+      </div>
+      ${logo?`<button class="btn btn-danger btn-sm" onclick="removeBrandLogo('${b.id}')" style="width:100%;margin-top:8px">Remove</button>`:''}
+    </div>`;
+  }).join('');
+}
+
+function uploadBrandLogo(id, e) {
+  const file = e.target.files[0]; if(!file) return;
+  if (file.size > 5*1024*1024) return toast('❌ Max 5MB');
+  const r = new FileReader();
+  r.onload = ev => { const l=getBrandLogos(); l[id]=ev.target.result; saveBrandLogos(l); renderBrandLogos(); toast('✅ Logo updated!'); };
+  r.readAsDataURL(file);
+}
+function setBrandLogoURL(id) {
+  const url = document.getElementById('blu-'+id)?.value.trim();
+  if (!url||!url.startsWith('http')) return toast('❌ Enter a valid URL');
+  const l=getBrandLogos(); l[id]=url; saveBrandLogos(l); renderBrandLogos(); toast('✅ Logo updated!');
+}
+function removeBrandLogo(id) {
+  const l=getBrandLogos(); delete l[id]; saveBrandLogos(l); renderBrandLogos(); toast('🗑️ Logo removed');
+}
+
+// ── TOAST ─────────────────────────────────────────────────
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+</script>
+</body>
+</html>

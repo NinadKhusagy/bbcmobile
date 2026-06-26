@@ -1,0 +1,1629 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>All Products — BBC Mobile Oman</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & BASE ──────────────────────────────────────── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --primary: #1a1a2e;
+  --primary-light: #16213e;
+  --accent: #e63946;
+  --accent-hover: #c1121f;
+  --gold: #f4a261;
+  --bg: #f4f5f7;
+  --card: #ffffff;
+  --text: #1a1a2e;
+  --text-muted: #6b7280;
+  --text-light: #9ca3af;
+  --border: #e5e7eb;
+  --border-dark: #d1d5db;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-lg: 16px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+  --font: 'Inter', system-ui, sans-serif;
+  --font-ar: 'Cairo', system-ui, sans-serif;
+}
+body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.5; }
+body.ar { font-family: var(--font-ar); }
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; display: block; }
+button { cursor: pointer; font-family: inherit; }
+
+/* ── TOPBAR ───────────────────────────────────────────── */
+.topbar { background: var(--primary); color: #9aa5b4; font-size: 12px; }
+.topbar-inner { max-width: 1280px; margin: auto; padding: 8px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 4px; }
+.topbar a { color: #9aa5b4; transition: color .2s; margin-inline-start: 16px; }
+.topbar a:hover { color: #fff; }
+
+/* ── HEADER ───────────────────────────────────────────── */
+header { background: #fff; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 200; box-shadow: var(--shadow-sm); }
+.header-inner { max-width: 1280px; margin: auto; padding: 14px 24px; display: flex; align-items: center; gap: 20px; }
+
+.logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.logo-icon { width: 42px; height: 42px; background: var(--accent); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 800; color: #fff; font-size: 15px; letter-spacing: -0.5px; }
+.logo-text { font-weight: 700; font-size: 17px; color: var(--primary); line-height: 1.1; }
+.logo-text span { display: block; font-size: 11px; font-weight: 400; color: var(--text-muted); }
+
+.search-wrap { flex: 1; max-width: 520px; position: relative; }
+.search-bar { display: flex; align-items: center; border: 1.5px solid var(--border-dark); border-radius: var(--radius-sm); overflow: hidden; transition: border .2s; background: #fff; }
+.search-bar:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(230,57,70,0.1); }
+.search-bar input { flex: 1; border: none; outline: none; padding: 10px 14px; font-size: 14px; color: var(--text); background: transparent; }
+.search-btn { background: var(--accent); border: none; padding: 10px 14px; color: #fff; display: flex; align-items: center; transition: background .2s; }
+.search-btn:hover { background: var(--accent-hover); }
+
+.search-dropdown { position: absolute; top: calc(100% + 4px); left: 0; right: 0; background: #fff; border: 1px solid var(--border); border-radius: var(--radius-sm); box-shadow: var(--shadow-lg); z-index: 300; display: none; }
+.search-result-item { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-bottom: 1px solid var(--border); transition: background .15s; }
+.search-result-item:last-child { border-bottom: none; }
+.search-result-item:hover { background: var(--bg); }
+.search-result-item img { width: 40px; height: 40px; object-fit: contain; border-radius: 6px; background: var(--bg); }
+.sr-name { font-size: 13px; font-weight: 500; }
+.sr-price { font-size: 12px; color: var(--accent); font-weight: 600; margin-top: 2px; }
+
+.header-actions { display: flex; align-items: center; gap: 10px; margin-inline-start: auto; }
+.btn-lang { background: var(--primary); color: #fff; border: none; padding: 8px 14px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500; transition: background .2s; }
+.btn-lang:hover { background: var(--accent); }
+.icon-btn { position: relative; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 8px; display: flex; align-items: center; color: var(--text); transition: all .2s; }
+.icon-btn:hover { border-color: var(--accent); color: var(--accent); }
+.icon-count { position: absolute; top: -6px; inset-inline-end: -6px; background: var(--accent); color: #fff; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; border: 2px solid #fff; }
+.cart-btn { background: var(--accent); color: #fff; border: none; padding: 9px 18px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; transition: background .2s; }
+.cart-btn:hover { background: var(--accent-hover); }
+.cart-count { background: #fff; color: var(--accent); border-radius: 50%; width: 20px; height: 20px; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+
+/* ── NAV ─────────────────────────────────────────────── */
+nav { background: var(--primary); overflow-x: auto; }
+nav::-webkit-scrollbar { height: 0; }
+.nav-inner { max-width: 1280px; margin: auto; padding: 0 24px; display: flex; gap: 0; }
+.nav-inner a { color: #9aa5b4; padding: 12px 16px; font-size: 13px; font-weight: 500; white-space: nowrap; border-bottom: 2px solid transparent; transition: all .2s; display: block; }
+.nav-inner a:hover, .nav-inner a.active { color: #fff; border-bottom-color: var(--accent); }
+.nav-sale { color: var(--gold) !important; }
+
+/* ── HERO ─────────────────────────────────────────────── */
+.hero { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 50%, #0f3460 100%); color: #fff; padding: 64px 24px; }
+.hero-inner { max-width: 1280px; margin: auto; display: flex; align-items: center; justify-content: space-between; gap: 40px; flex-wrap: wrap; }
+.hero-content { flex: 1; min-width: 280px; }
+.hero-badge { display: inline-block; background: rgba(230,57,70,0.2); border: 1px solid rgba(230,57,70,0.4); color: #ff8891; font-size: 12px; font-weight: 600; padding: 5px 14px; border-radius: 20px; margin-bottom: 20px; letter-spacing: 0.5px; }
+.hero h1 { font-size: clamp(28px, 4vw, 44px); font-weight: 800; line-height: 1.15; margin-bottom: 14px; }
+.hero p { font-size: 15px; color: #8ba3c7; margin-bottom: 28px; line-height: 1.7; max-width: 520px; }
+.hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn-primary { background: var(--accent); color: #fff; border: none; padding: 13px 28px; border-radius: var(--radius-sm); font-size: 15px; font-weight: 700; transition: all .2s; }
+.btn-primary:hover { background: var(--accent-hover); transform: translateY(-1px); }
+.btn-outline { background: transparent; color: #fff; border: 1.5px solid rgba(255,255,255,0.35); padding: 13px 28px; border-radius: var(--radius-sm); font-size: 15px; font-weight: 500; transition: all .2s; }
+.btn-outline:hover { border-color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.06); }
+
+.hero-brands { display: flex; flex-wrap: wrap; gap: 10px; align-content: flex-start; }
+.brand-pill { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); color: #c5d3e0; padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 500; }
+
+/* ── TRUST STRIP ─────────────────────────────────────── */
+.trust-strip { background: #fff; border-bottom: 1px solid var(--border); }
+.trust-inner { max-width: 1280px; margin: auto; padding: 16px 24px; display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+.trust-item { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; color: var(--text-muted); }
+.trust-item svg { color: var(--accent); flex-shrink: 0; }
+
+/* ── SECTION ─────────────────────────────────────────── */
+.section { max-width: 1280px; margin: 0 auto; padding: 40px 24px; }
+.section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+.section-header h2 { font-size: 22px; font-weight: 700; }
+.see-all { color: var(--accent); font-size: 14px; font-weight: 600; transition: opacity .2s; }
+.see-all:hover { opacity: 0.7; }
+
+/* ── BRANDS GRID ─────────────────────────────────────── */
+.brands-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px; }
+.brand-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 12px; text-align: center; transition: all .2s; }
+.brand-card:hover { border-color: var(--accent); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.brand-emoji { font-size: 28px; margin-bottom: 8px; }
+.brand-name { font-size: 13px; font-weight: 700; color: var(--text); }
+.brand-count { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+/* ── FILTER TABS ─────────────────────────────────────── */
+.filter-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+.ftab { background: var(--card); border: 1.5px solid var(--border); border-radius: 20px; padding: 7px 16px; font-size: 13px; font-weight: 500; color: var(--text-muted); transition: all .2s; }
+.ftab:hover { border-color: var(--accent); color: var(--accent); }
+.ftab.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* ── PRODUCT GRID ────────────────────────────────────── */
+.product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(195px, 1fr)); gap: 16px; }
+.product-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: all .25s; position: relative; }
+.product-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-3px); border-color: var(--border-dark); }
+.product-img-wrap { position: relative; height: 170px; background: var(--bg); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.product-img { width: 100%; height: 100%; object-fit: contain; padding: 12px; transition: transform .3s; }
+.product-card:hover .product-img { transform: scale(1.04); }
+.badge { position: absolute; top: 10px; font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+.badge-new { inset-inline-start: 10px; background: #10b981; color: #fff; }
+.badge-sale { inset-inline-end: 10px; background: var(--accent); color: #fff; }
+.wishlist-btn { position: absolute; bottom: 10px; inset-inline-end: 10px; background: #fff; border: 1px solid var(--border); border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); transition: all .2s; box-shadow: var(--shadow-sm); }
+.wishlist-btn:hover, .wishlist-btn.active { border-color: var(--accent); color: var(--accent); background: #fff0f1; }
+.wishlist-btn.active svg { fill: var(--accent); }
+.product-info { padding: 14px; }
+.product-brand { font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+.product-name { font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.4; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.stars { display: flex; gap: 1px; margin-bottom: 8px; }
+.star { font-size: 12px; color: var(--border-dark); }
+.star.filled { color: var(--gold); }
+.product-pricing { display: flex; align-items: baseline; gap: 6px; margin-bottom: 10px; }
+.product-price { font-size: 16px; font-weight: 700; color: var(--accent); }
+.product-price small { font-size: 11px; font-weight: 500; }
+.product-old-price { font-size: 12px; color: var(--text-light); text-decoration: line-through; }
+.btn-add-cart { width: 100%; background: var(--primary); color: #fff; border: none; padding: 9px 12px; border-radius: var(--radius-sm); font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px; transition: background .2s; }
+.btn-add-cart:hover { background: var(--accent); }
+.btn-sold-out { width: 100%; background: #f3f4f6; color: #9ca3af; border: 1.5px solid #e5e7eb; padding: 9px 12px; border-radius: var(--radius-sm); font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: not-allowed; letter-spacing: .3px; }
+.sold-out-overlay { position: absolute; inset: 0; background: rgba(255,255,255,0.6); display: flex; align-items: center; justify-content: center; z-index: 2; }
+.sold-out-tag { background: #1a1a2e; color: #fff; font-size: 11px; font-weight: 800; padding: 6px 14px; border-radius: 6px; text-transform: uppercase; letter-spacing: 1px; transform: rotate(-8deg); }
+.product-card.sold-out .product-img { opacity: 0.55; filter: grayscale(40%); }
+
+/* ── FLASH BANNER ────────────────────────────────────── */
+.flash-banner { background: linear-gradient(135deg, #c1121f 0%, #e63946 100%); color: #fff; }
+.flash-inner { max-width: 1280px; margin: auto; padding: 32px 24px; display: flex; align-items: center; gap: 32px; flex-wrap: wrap; justify-content: space-between; }
+.flash-tag { display: inline-block; background: rgba(255,255,255,0.2); font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+.flash-text h3 { font-size: 24px; font-weight: 800; margin-bottom: 6px; }
+.flash-text p { font-size: 14px; opacity: 0.9; }
+.countdown-wrap { display: flex; align-items: center; gap: 8px; }
+.cd-box { background: rgba(255,255,255,0.15); border-radius: var(--radius-sm); padding: 10px 16px; text-align: center; min-width: 64px; }
+.cd-num { display: block; font-size: 26px; font-weight: 800; line-height: 1; }
+.cd-lbl { display: block; font-size: 10px; opacity: 0.8; text-transform: uppercase; margin-top: 2px; }
+.cd-sep { font-size: 26px; font-weight: 700; opacity: 0.6; }
+.btn-white { background: #fff; color: var(--accent); border: none; padding: 13px 24px; border-radius: var(--radius-sm); font-size: 15px; font-weight: 700; transition: all .2s; white-space: nowrap; }
+.btn-white:hover { background: #f0f0f0; }
+
+/* ── PRODUCTS PAGE ───────────────────────────────────── */
+.page-layout { max-width: 1280px; margin: 0 auto; padding: 32px 24px; }
+.sidebar { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+/* Filter drawer overlay */
+.filter-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:400; backdrop-filter:blur(2px); }
+.filter-overlay.open { display:block; }
+.filter-drawer { position:fixed; top:0; inset-inline-start:-340px; width:320px; height:100%; background:#fff; z-index:401; transition:inset-inline-start .3s; overflow-y:auto; box-shadow:var(--shadow-lg); display:flex; flex-direction:column; }
+.filter-drawer.open { inset-inline-start:0; }
+.filter-drawer-head { padding:18px 20px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; background:#fff; z-index:1; }
+.filter-drawer-head h3 { font-size:16px; font-weight:700; }
+.filter-close { background:var(--bg); border:none; width:32px; height:32px; border-radius:50%; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--text-muted); }
+.filter-close:hover { background:var(--accent); color:#fff; }
+.filter-drawer-body { padding:20px; flex:1; }
+.filter-drawer-foot { padding:16px 20px; border-top:1px solid var(--border); display:flex; gap:10px; position:sticky; bottom:0; background:#fff; }
+.btn-apply { flex:1; background:var(--accent); color:#fff; border:none; padding:11px; border-radius:var(--radius-sm); font-size:14px; font-weight:700; cursor:pointer; }
+.btn-clear { background:var(--bg); border:1px solid var(--border); color:var(--text-muted); padding:11px 16px; border-radius:var(--radius-sm); font-size:14px; font-weight:600; cursor:pointer; }
+.btn-clear:hover { border-color:var(--accent); color:var(--accent); }
+/* Filter trigger bar */
+.filter-bar { max-width:1280px; margin:0 auto; padding:0 24px 20px; display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+.btn-filter-open { display:flex; align-items:center; gap:8px; background:#fff; border:1.5px solid var(--border); border-radius:var(--radius-sm); padding:9px 18px; font-size:14px; font-weight:600; cursor:pointer; transition:all .2s; color:var(--text); }
+.btn-filter-open:hover { border-color:var(--accent); color:var(--accent); }
+.active-filters { display:flex; gap:8px; flex-wrap:wrap; }
+.active-tag { background:#fff0f1; border:1px solid #fca5a5; color:var(--accent); font-size:12px; font-weight:600; padding:4px 10px; border-radius:20px; display:flex; align-items:center; gap:5px; cursor:pointer; }
+.active-tag:hover { background:#fee2e2; }
+.sidebar h3 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+.sidebar-group { margin-bottom: 24px; }
+.sidebar-group h4 { font-size: 14px; font-weight: 600; margin-bottom: 12px; }
+.sidebar-opt { display: flex; align-items: center; gap: 8px; padding: 6px 0; cursor: pointer; font-size: 14px; color: var(--text-muted); transition: color .2s; }
+.sidebar-opt:hover { color: var(--text); }
+.sidebar-opt input[type=checkbox] { accent-color: var(--accent); width: 15px; height: 15px; }
+.sidebar-opt.active { color: var(--accent); font-weight: 600; }
+.price-range { width: 100%; accent-color: var(--accent); }
+.sort-select { width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 14px; background: var(--card); color: var(--text); outline: none; }
+.products-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; gap: 12px; flex-wrap: wrap; }
+.product-count-text { font-size: 14px; color: var(--text-muted); }
+.no-results { grid-column: 1/-1; text-align: center; padding: 60px 20px; color: var(--text-muted); }
+
+/* ── PRODUCT DETAIL PAGE ─────────────────────────────── */
+.product-detail { max-width: 1280px; margin: 0 auto; padding: 40px 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+.detail-gallery { position: sticky; top: 80px; }
+.detail-main-img { background: var(--bg); border-radius: var(--radius-lg); overflow: hidden; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+.detail-main-img img { width: 80%; height: 80%; object-fit: contain; }
+.detail-thumbs { display: flex; gap: 8px; flex-wrap: wrap; }
+.detail-thumb { width: 68px; height: 68px; background: var(--bg); border-radius: var(--radius-sm); border: 2px solid transparent; cursor: pointer; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.detail-thumb.active, .detail-thumb:hover { border-color: var(--accent); }
+.detail-thumb img { width: 80%; height: 80%; object-fit: contain; }
+.detail-info .product-brand { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-muted); margin-bottom: 8px; }
+.detail-info h1 { font-size: 26px; font-weight: 800; line-height: 1.25; margin-bottom: 12px; }
+.detail-price-row { display: flex; align-items: baseline; gap: 12px; margin-bottom: 20px; }
+.detail-price { font-size: 28px; font-weight: 800; color: var(--accent); }
+.detail-old-price { font-size: 16px; color: var(--text-light); text-decoration: line-through; }
+.detail-desc { font-size: 14px; color: var(--text-muted); line-height: 1.8; margin-bottom: 24px; }
+.detail-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn-lg { padding: 14px 32px; border-radius: var(--radius-sm); font-size: 15px; font-weight: 700; border: none; transition: all .2s; }
+.btn-buy { background: var(--accent); color: #fff; flex: 1; }
+.btn-buy:hover { background: var(--accent-hover); }
+.btn-wish-lg { background: var(--bg); border: 1.5px solid var(--border); color: var(--text); }
+.btn-wish-lg:hover { border-color: var(--accent); color: var(--accent); }
+.detail-specs { margin-top: 28px; }
+.detail-specs table { width: 100%; border-collapse: collapse; }
+.detail-specs td { padding: 10px 12px; font-size: 13px; border-bottom: 1px solid var(--border); }
+.detail-specs td:first-child { color: var(--text-muted); width: 130px; font-weight: 500; }
+
+/* ── CART SIDEBAR ────────────────────────────────────── */
+.cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 500; display: none; backdrop-filter: blur(2px); }
+.cart-overlay.open { display: block; }
+.cart-sidebar { position: fixed; top: 0; inset-inline-end: -420px; width: 400px; height: 100%; background: #fff; z-index: 600; transition: inset-inline-end .3s; display: flex; flex-direction: column; box-shadow: var(--shadow-lg); }
+.cart-sidebar.open { inset-inline-end: 0; }
+.cart-head { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+.cart-head h3 { font-size: 18px; font-weight: 700; }
+.cart-close { background: var(--bg); border: none; width: 32px; height: 32px; border-radius: 50%; font-size: 16px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); transition: all .2s; }
+.cart-close:hover { background: var(--accent); color: #fff; }
+.cart-items-list { flex: 1; overflow-y: auto; padding: 16px; }
+.cart-item { display: flex; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+.cart-item-img { width: 64px; height: 64px; object-fit: contain; background: var(--bg); border-radius: var(--radius-sm); padding: 4px; flex-shrink: 0; }
+.cart-item-info { flex: 1; min-width: 0; }
+.cart-item-name { font-size: 13px; font-weight: 600; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cart-item-price { font-size: 14px; font-weight: 700; color: var(--accent); margin-bottom: 8px; }
+.cart-qty-ctrl { display: flex; align-items: center; gap: 10px; }
+.cart-qty-ctrl button { background: var(--bg); border: 1px solid var(--border); width: 28px; height: 28px; border-radius: 6px; font-size: 16px; font-weight: 600; display: flex; align-items: center; justify-content: center; transition: all .2s; }
+.cart-qty-ctrl button:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+.cart-qty-ctrl span { font-size: 14px; font-weight: 600; min-width: 20px; text-align: center; }
+.cart-remove { background: none; border: none; color: var(--text-light); font-size: 18px; padding: 4px; align-self: flex-start; transition: color .2s; }
+.cart-remove:hover { color: var(--accent); }
+.empty-cart { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 20px; color: var(--text-muted); gap: 12px; }
+.empty-icon { font-size: 52px; }
+.cart-foot { padding: 20px 24px; border-top: 1px solid var(--border); }
+.cart-subtotal, .cart-delivery, .cart-total-row { display: flex; justify-content: space-between; align-items: center; font-size: 14px; padding: 6px 0; }
+.cart-total-row { font-weight: 700; font-size: 16px; padding-top: 12px; border-top: 1px solid var(--border); margin-top: 6px; }
+.total-price { color: var(--accent); }
+.free-tag { background: #d1fae5; color: #065f46; font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 4px; }
+.btn-checkout { display: block; width: 100%; background: var(--accent); color: #fff; border: none; padding: 14px; border-radius: var(--radius-sm); font-size: 15px; font-weight: 700; text-align: center; margin-top: 16px; transition: background .2s; }
+.btn-checkout:hover { background: var(--accent-hover); }
+.btn-continue { display: block; text-align: center; color: var(--text-muted); font-size: 13px; padding-top: 12px; }
+.btn-continue:hover { color: var(--accent); }
+
+/* ── FOOTER ──────────────────────────────────────────── */
+footer { background: var(--primary); color: #9aa5b4; margin-top: 60px; }
+.footer-inner { max-width: 1280px; margin: auto; padding: 48px 24px 32px; display: grid; grid-template-columns: 1.5fr repeat(3, 1fr); gap: 40px; }
+.footer-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.footer-logo .logo-icon { background: var(--accent); }
+.footer-logo span { font-size: 18px; font-weight: 700; color: #fff; }
+.footer-brand p { font-size: 13px; line-height: 1.8; margin-bottom: 20px; }
+.social-links { display: flex; gap: 8px; }
+.social-btn { width: 36px; height: 36px; background: rgba(255,255,255,0.06); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #9aa5b4; transition: all .2s; border: 1px solid rgba(255,255,255,0.08); }
+.social-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+.footer-col h4 { color: #fff; font-size: 14px; font-weight: 600; margin-bottom: 16px; }
+.footer-col a { display: block; color: #9aa5b4; font-size: 13px; margin-bottom: 10px; transition: color .2s; }
+.footer-col a:hover { color: #fff; }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,0.06); padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; max-width: 1280px; margin: auto; font-size: 12px; }
+.payment-icons { display: flex; gap: 8px; }
+.pay-icon { background: rgba(255,255,255,0.08); color: #9aa5b4; font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); }
+
+/* ── RESPONSIVE ──────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .footer-inner { grid-template-columns: 1fr 1fr; gap: 28px; }
+  .page-layout { padding: 20px; }
+  .product-detail { grid-template-columns: 1fr; }
+  .detail-gallery { position: static; }
+}
+@media (max-width: 768px) {
+  .header-inner { flex-wrap: wrap; gap: 12px; }
+  .search-wrap { order: 3; width: 100%; max-width: 100%; }
+  .hero-inner { flex-direction: column; }
+  .hero-brands { display: none; }
+  .flash-inner { flex-direction: column; text-align: center; }
+  .footer-inner { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+  .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .brands-grid { grid-template-columns: repeat(3, 1fr); }
+  .trust-inner { gap: 12px; }
+}
+
+
+/* ── ADMIN PANEL ── */
+
+/* ── BRAND LOGO MANAGER ── */
+.brand-logo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px; padding: 20px; }
+.brand-logo-card { background: var(--bg); border: 1.5px solid var(--border); border-radius: 12px; padding: 16px; text-align: center; position: relative; transition: all .2s; }
+.brand-logo-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+.brand-logo-img-wrap { width: 80px; height: 80px; margin: 0 auto 10px; border-radius: 12px; overflow: hidden; background: #fff; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; }
+.brand-logo-img-wrap:hover .brand-logo-hover { opacity: 1; }
+.brand-logo-hover { position: absolute; inset: 0; background: rgba(0,0,0,0.55); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity .2s; border-radius: 11px; }
+.brand-logo-hover span { color: #fff; font-size: 11px; font-weight: 700; }
+.brand-logo-img { width: 100%; height: 100%; object-fit: contain; padding: 8px; }
+.brand-logo-emoji { font-size: 36px; }
+.brand-logo-name { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+.brand-logo-count { font-size: 11px; color: var(--muted); }
+.brand-logo-input { display: none; }
+.brand-logo-actions { display: flex; gap: 6px; justify-content: center; margin-top: 10px; }
+.brand-logo-url-row { display: flex; gap: 6px; margin-top: 8px; }
+.brand-logo-url-input { flex: 1; padding: 6px 10px; border: 1.5px solid var(--border); border-radius: 7px; font-size: 12px; outline: none; }
+.brand-logo-url-input:focus { border-color: var(--accent); }
+
+
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --primary:#1a1a2e;
+  --accent:#e63946;
+  --accent2:#f4a261;
+  --green:#10b981;
+  --bg:#f4f5f7;
+  --card:#fff;
+  --border:#e5e7eb;
+  --text:#1a1a2e;
+  --muted:#6b7280;
+  --light:#9ca3af;
+  --radius:12px;
+  --shadow:0 2px 8px rgba(0,0,0,0.08);
+  --shadow-lg:0 8px 24px rgba(0,0,0,0.12);
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* ── LOGIN ── */
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,var(--primary),#0f3460)}
+.login-box{background:#fff;border-radius:20px;padding:48px 40px;width:100%;max-width:400px;box-shadow:var(--shadow-lg);text-align:center}
+.login-logo{width:60px;height:60px;background:var(--accent);border-radius:14px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:22px;margin:0 auto 20px}
+.login-box h1{font-size:22px;font-weight:800;margin-bottom:6px}
+.login-box p{color:var(--muted);font-size:14px;margin-bottom:32px}
+.login-field{width:100%;padding:12px 16px;border:1.5px solid var(--border);border-radius:10px;font-size:15px;margin-bottom:14px;outline:none;transition:border .2s}
+.login-field:focus{border-color:var(--accent)}
+.login-btn{width:100%;background:var(--accent);color:#fff;border:none;padding:13px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;transition:background .2s}
+.login-btn:hover{background:#c1121f}
+.login-error{color:var(--accent);font-size:13px;margin-top:10px;display:none}
+
+/* ── MAIN ADMIN ── */
+#admin-screen{display:none;min-height:100vh}
+
+/* TOP BAR */
+.admin-top{background:var(--primary);color:#fff;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:100}
+.admin-top-left{display:flex;align-items:center;gap:12px}
+.admin-logo{width:36px;height:36px;background:var(--accent);border-radius:9px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px}
+.admin-top h1{font-size:16px;font-weight:700}
+.admin-top-right{display:flex;align-items:center;gap:12px}
+.admin-top .badge{background:var(--green);color:#fff;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px}
+.btn-logout{background:rgba(255,255,255,0.1);border:none;color:#fff;padding:7px 14px;border-radius:8px;font-size:13px;cursor:pointer;font-family:inherit}
+.btn-logout:hover{background:var(--accent)}
+
+/* LAYOUT */
+.admin-body{display:flex;min-height:calc(100vh - 60px)}
+
+/* SIDEBAR NAV */
+.admin-nav{width:220px;background:#fff;border-right:1px solid var(--border);padding:20px 0;flex-shrink:0;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto}
+.nav-section{padding:8px 16px;font-size:11px;font-weight:700;color:var(--light);text-transform:uppercase;letter-spacing:1px;margin-top:12px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;font-size:14px;font-weight:500;color:var(--muted);cursor:pointer;transition:all .15s;border-left:3px solid transparent}
+.nav-item:hover{color:var(--text);background:#f9fafb}
+.nav-item.active{color:var(--accent);background:#fff5f5;border-left-color:var(--accent);font-weight:600}
+.nav-item svg{width:18px;height:18px;flex-shrink:0}
+
+/* CONTENT */
+.admin-content{flex:1;padding:28px;overflow-y:auto}
+
+/* PAGE SECTIONS */
+.page-section{display:none}
+.page-section.active{display:block}
+
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin-bottom:28px}
+.stat-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:20px;display:flex;align-items:center;gap:14px}
+.stat-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.stat-val{font-size:24px;font-weight:800;line-height:1}
+.stat-lbl{font-size:12px;color:var(--muted);margin-top:3px}
+
+/* SECTION HEADER */
+.section-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.section-hd h2{font-size:20px;font-weight:700}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:9px;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all .2s;font-family:inherit}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:#c1121f}
+.btn-secondary{background:var(--bg);border:1.5px solid var(--border);color:var(--text)}
+.btn-secondary:hover{border-color:var(--accent);color:var(--accent)}
+.btn-green{background:var(--green);color:#fff}
+.btn-green:hover{background:#059669}
+.btn-danger{background:#fee2e2;color:#dc2626;border:1px solid #fca5a5}
+.btn-danger:hover{background:#dc2626;color:#fff}
+.btn-sm{padding:6px 12px;font-size:12px}
+
+/* PRODUCT FORM */
+.form-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:24px}
+.form-card-head{padding:18px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;background:#fafafa}
+.form-card-head h3{font-size:15px;font-weight:700}
+.form-body{padding:24px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.form-body.single{grid-template-columns:1fr}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-group.full{grid-column:1/-1}
+.form-label{font-size:13px;font-weight:600;color:var(--text)}
+.form-label span{color:var(--accent);margin-left:2px}
+.form-input,.form-select,.form-textarea{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:14px;font-family:inherit;outline:none;transition:border .2s;background:#fff;color:var(--text)}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(230,57,70,0.08)}
+.form-textarea{resize:vertical;min-height:90px;line-height:1.6}
+
+/* PHOTO UPLOAD */
+.photo-upload-area{border:2px dashed var(--border);border-radius:12px;padding:32px;text-align:center;cursor:pointer;transition:all .2s;background:#fafafa;position:relative}
+.photo-upload-area:hover{border-color:var(--accent);background:#fff5f5}
+.photo-upload-area.dragover{border-color:var(--accent);background:#fff5f5;transform:scale(1.01)}
+.photo-upload-icon{font-size:40px;margin-bottom:10px}
+.photo-upload-area p{font-size:14px;color:var(--muted);margin-bottom:6px}
+.photo-upload-area small{font-size:12px;color:var(--light)}
+.photo-upload-input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+
+/* PHOTO PREVIEWS */
+.photo-previews{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.photo-preview-item{position:relative;width:90px;height:90px;border-radius:10px;overflow:hidden;border:2px solid var(--border)}
+.photo-preview-item img{width:100%;height:100%;object-fit:cover}
+.photo-preview-item .remove-photo{position:absolute;top:4px;right:4px;background:rgba(0,0,0,0.6);color:#fff;border:none;border-radius:50%;width:20px;height:20px;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.photo-preview-item.primary-photo{border-color:var(--accent)}
+.photo-preview-item .primary-badge{position:absolute;bottom:0;left:0;right:0;background:var(--accent);color:#fff;font-size:9px;font-weight:700;text-align:center;padding:2px;text-transform:uppercase}
+
+/* URL input row */
+.url-row{display:flex;gap:8px;margin-top:10px}
+.url-row .form-input{flex:1}
+
+/* PUBLISH TOGGLE */
+.toggle-wrap{display:flex;align-items:center;gap:12px}
+.toggle{position:relative;width:48px;height:26px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0;position:absolute}
+.toggle-slider{position:absolute;inset:0;background:#d1d5db;border-radius:20px;cursor:pointer;transition:.3s}
+.toggle-slider:before{content:'';position:absolute;width:20px;height:20px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.3s;box-shadow:0 1px 3px rgba(0,0,0,0.2)}
+.toggle input:checked + .toggle-slider{background:var(--green)}
+.toggle input:checked + .toggle-slider:before{transform:translateX(22px)}
+.toggle-label{font-size:14px;font-weight:500}
+
+/* STAR RATING INPUT */
+.star-input{display:flex;gap:4px;flex-direction:row-reverse;justify-content:flex-end}
+.star-input input{display:none}
+.star-input label{font-size:24px;color:#d1d5db;cursor:pointer;transition:color .15s}
+.star-input label:hover,.star-input label:hover ~ label,.star-input input:checked ~ label{color:#f4a261}
+
+/* PRODUCTS LIST */
+.products-table{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.table-head{display:grid;grid-template-columns:60px 1fr 100px 90px 90px 110px;gap:0;background:#f9fafb;border-bottom:1px solid var(--border);padding:12px 16px;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.table-row{display:grid;grid-template-columns:60px 1fr 100px 90px 90px 110px;gap:0;padding:14px 16px;border-bottom:1px solid var(--border);align-items:center;transition:background .15s}
+.table-row:last-child{border-bottom:none}
+.table-row:hover{background:#fafafa}
+.prod-thumb{width:48px;height:48px;border-radius:8px;object-fit:cover;background:var(--bg);border:1px solid var(--border)}
+.prod-thumb-placeholder{width:48px;height:48px;border-radius:8px;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:22px}
+.prod-info .prod-name{font-size:13px;font-weight:600;margin-bottom:2px}
+.prod-info .prod-brand{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.status-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px}
+.status-published{background:#d1fae5;color:#065f46}
+.status-draft{background:#f3f4f6;color:#6b7280}
+.table-actions{display:flex;gap:6px}
+
+/* SEARCH BAR */
+.search-row{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.admin-search{flex:1;min-width:200px;padding:9px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:14px;outline:none;font-family:inherit}
+.admin-search:focus{border-color:var(--accent)}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--primary);color:#fff;padding:13px 24px;border-radius:10px;font-size:14px;font-weight:500;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;box-shadow:var(--shadow-lg)}
+.toast.show{opacity:1}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:500;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:16px;padding:28px;max-width:400px;width:100%;box-shadow:var(--shadow-lg)}
+.modal h3{font-size:17px;font-weight:700;margin-bottom:8px}
+.modal p{color:var(--muted);font-size:14px;margin-bottom:24px;line-height:1.6}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:60px 20px;color:var(--muted)}
+.empty-state div{font-size:52px;margin-bottom:12px}
+.empty-state p{font-size:15px;margin-bottom:20px}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .admin-nav{display:none}
+  .form-body{grid-template-columns:1fr}
+  .table-head,.table-row{grid-template-columns:48px 1fr 80px 80px}
+  .table-head > *:nth-child(n+5),.table-row > *:nth-child(n+5){display:none}
+  .stats-grid{grid-template-columns:1fr 1fr}
+}
+
+#admin-panel-overlay { background: #f4f5f7; font-family: "Inter", sans-serif; }
+</style>
+</head>
+<body id="body">
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <span class="topbar-left">📍 <span data-en="Muscat, Oman" data-ar="مسقط، عُمان">Muscat, Oman</span> &nbsp;|&nbsp; <a href="tel:+96878879905">+968 78879905</a></span>
+    <span class="topbar-right">
+      <a href="#" data-en="Track Order" data-ar="تتبع الطلب">Track Order</a>
+      <a href="#" data-en="Support" data-ar="الدعم">Support</a>
+    </span>
+  </div>
+</div>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-icon">BB</div>
+      <div class="logo-text">BBC Mobile <span data-en="Phones & Electronics — Oman" data-ar="الهواتف والإلكترونيات — عُمان">Phones & Electronics — Oman</span></div>
+    </a>
+    <div class="search-wrap">
+      <div class="search-bar">
+        <input type="text" id="search-input" placeholder="Search phones, brands, accessories..." oninput="handleSearch(this.value)">
+        <button class="search-btn">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </button>
+      </div>
+      <div class="search-dropdown" id="search-dropdown"></div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-lang" onclick="toggleLang()" id="lang-btn">عربي</button>
+      <a href="wishlist.html" class="icon-btn" title="Wishlist">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <span class="icon-count" id="wish-count" style="display:none">0</span>
+      </a>
+      <button class="cart-btn" onclick="openCart()">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span data-en="Cart" data-ar="السلة">Cart</span>
+        <span class="cart-count" id="cart-count">0</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" data-en="Home" data-ar="الرئيسية">Home</a>
+    <a href="products.html?brand=apple" data-en="Apple" data-ar="أبل">Apple</a>
+    <a href="products.html?brand=samsung" data-en="Samsung" data-ar="سامسونج">Samsung</a>
+    <a href="products.html?brand=huawei" data-en="Huawei" data-ar="هواوي">Huawei</a>
+    <a href="products.html?brand=xiaomi" data-en="Xiaomi" data-ar="شاومي">Xiaomi</a>
+    <a href="products.html?brand=oppo" data-en="OPPO" data-ar="أوبو">OPPO</a>
+    <a href="products.html?brand=realme" data-en="Realme" data-ar="ريلمي">Realme</a>
+    <a href="products.html?brand=vivo" data-en="Vivo" data-ar="فيفو">Vivo</a>
+    <a href="products.html?cat=accessories" data-en="Accessories" data-ar="إكسسوارات">Accessories</a>
+    <a href="products.html?sale=1" class="nav-sale" data-en="🔥 Deals" data-ar="🔥 العروض">🔥 Deals</a>
+  </div>
+</nav>
+
+<!-- FILTER OVERLAY + DRAWER -->
+<div class="filter-overlay" id="filter-overlay" onclick="closeFilter()"></div>
+<div class="filter-drawer" id="filter-drawer">
+  <div class="filter-drawer-head">
+    <h3 data-en="Filters" data-ar="الفلاتر">Filters</h3>
+    <button class="filter-close" onclick="closeFilter()">✕</button>
+  </div>
+  <div class="filter-drawer-body">
+    <div class="sidebar-group">
+      <h4 data-en="Brand" data-ar="الماركة">Brand</h4>
+      <label class="sidebar-opt"><input type="checkbox" data-filter="brand" value="apple"> Apple</label>
+      <label class="sidebar-opt"><input type="checkbox" data-filter="brand" value="samsung"> Samsung</label>
+      <label class="sidebar-opt"><input type="checkbox" data-filter="brand" value="huawei"> Huawei</label>
+      <label class="sidebar-opt"><input type="checkbox" data-filter="brand" value="xiaomi"> Xiaomi</label>
+      <label class="sidebar-opt"><input type="checkbox" data-filter="brand" value="oppo"> OPPO</label>
+      <label class="sidebar-opt"><input type="checkbox" data-filter="brand" value="vivo"> Vivo</label>
+      <label class="sidebar-opt"><input type="checkbox" data-filter="brand" value="realme"> Realme</label>
+      <label class="sidebar-opt"><input type="checkbox" data-filter="brand" value="nokia"> Nokia</label>
+      <label class="sidebar-opt"><input type="checkbox" data-filter="brand" value="motorola"> Motorola</label>
+      <label class="sidebar-opt"><input type="checkbox" data-filter="brand" value="honor"> Honor</label>
+    </div>
+    <div class="sidebar-group">
+      <h4 data-en="Category" data-ar="الفئة">Category</h4>
+      <label class="sidebar-opt"><input type="checkbox" data-filter="cat" value="smartphones"> <span data-en="Smartphones" data-ar="هواتف ذكية">Smartphones</span></label>
+      <label class="sidebar-opt"><input type="checkbox" data-filter="cat" value="tablets"> <span data-en="Tablets" data-ar="أجهزة لوحية">Tablets</span></label>
+      <label class="sidebar-opt"><input type="checkbox" data-filter="cat" value="smartwatches"> <span data-en="Smartwatches" data-ar="ساعات ذكية">Smartwatches</span></label>
+      <label class="sidebar-opt"><input type="checkbox" data-filter="cat" value="accessories"> <span data-en="Accessories" data-ar="إكسسوارات">Accessories</span></label>
+    </div>
+    <div class="sidebar-group">
+      <h4 data-en="Max Price (OMR)" data-ar="السعر الأقصى (ر.ع.)">Max Price (OMR)</h4>
+      <input type="range" class="price-range" min="20" max="700" value="700" id="price-range" oninput="document.getElementById('price-val').textContent=this.value">
+      <div style="font-size:13px;color:var(--text-muted);margin-top:6px">Up to <span id="price-val">700</span> OMR</div>
+    </div>
+    <div class="sidebar-group">
+      <h4 data-en="Sort By" data-ar="ترتيب حسب">Sort By</h4>
+      <select class="sort-select" id="sort-select">
+        <option value="" data-en="Default" data-ar="الافتراضي">Default</option>
+        <option value="price-asc" data-en="Price: Low to High" data-ar="السعر: من الأقل للأعلى">Price: Low to High</option>
+        <option value="price-desc" data-en="Price: High to Low" data-ar="السعر: من الأعلى للأقل">Price: High to Low</option>
+        <option value="new" data-en="New Arrivals" data-ar="الوصول الجديد">New Arrivals</option>
+      </select>
+    </div>
+  </div>
+  <div class="filter-drawer-foot">
+    <button class="btn-clear" onclick="clearFilters()" data-en="Clear All" data-ar="مسح الكل">Clear All</button>
+    <button class="btn-apply" onclick="applyAndClose()" data-en="Show Results" data-ar="عرض النتائج">Show Results</button>
+  </div>
+</div>
+
+<!-- FILTER TRIGGER BAR -->
+<div class="filter-bar">
+  <button class="btn-filter-open" onclick="openFilter()">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+    <span data-en="Filter &amp; Sort" data-ar="فلترة وترتيب">Filter &amp; Sort</span>
+    <span id="filter-badge" style="display:none;background:var(--accent);color:#fff;border-radius:50%;width:18px;height:18px;font-size:10px;font-weight:700;align-items:center;justify-content:center;">0</span>
+  </button>
+  <div class="active-filters" id="active-filters"></div>
+</div>
+
+<!-- MAIN AREA -->
+<div class="page-layout">
+  <div class="products-header">
+    <h1 id="page-title" style="font-size:20px;font-weight:700">All Products</h1>
+    <span class="product-count-text"><span id="product-count">0</span> <span data-en="products found" data-ar="منتج">products found</span></span>
+  </div>
+  <div class="product-grid" id="all-products"></div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo"><div class="logo-icon">BB</div><span>BBC Mobile</span></div>
+      <p data-en="Your trusted phone & electronics retailer in Muscat, Oman." data-ar="موزعك الموثوق للهواتف والإلكترونيات في مسقط.">Your trusted phone & electronics retailer in Muscat, Oman.</p>
+    </div>
+    <div class="footer-col">
+      <h4 data-en="Quick Links" data-ar="روابط سريعة">Quick Links</h4>
+      <a href="index.html" data-en="Home" data-ar="الرئيسية">Home</a>
+      <a href="products.html" data-en="All Products" data-ar="كل المنتجات">All Products</a>
+      <a href="products.html?sale=1" data-en="Deals" data-ar="العروض">Deals</a>
+    </div>
+    <div class="footer-col">
+      <h4 data-en="Brands" data-ar="الماركات">Brands</h4>
+      <a href="products.html?brand=apple">Apple</a>
+      <a href="products.html?brand=samsung">Samsung</a>
+      <a href="products.html?brand=huawei">Huawei</a>
+    </div>
+    <div class="footer-col">
+      <h4 data-en="Contact" data-ar="تواصل">Contact</h4>
+      <a href="tel:+96878879905">📞 +968 78879905</a>
+      <a href="mailto:info@bbcmobile.om">✉️ info@bbcmobile.om</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span data-en="© 2025 BBC Mobile. All rights reserved." data-ar="© 2025 BBC Mobile. جميع الحقوق محفوظة.">© 2025 BBC Mobile. All rights reserved.</span>
+  </div>
+</footer>
+
+<div class="cart-overlay" id="cart-overlay" onclick="closeCart()"></div>
+<div class="cart-sidebar" id="cart-sidebar">
+  <div class="cart-head">
+    <h3 data-en="Your Cart" data-ar="سلة التسوق">Your Cart</h3>
+    <button class="cart-close" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cart-items-list" id="cart-items-list">
+    <div class="empty-cart"><div class="empty-icon">🛒</div><p data-en="Your cart is empty" data-ar="سلتك فارغة">Your cart is empty</p></div>
+  </div>
+  <div class="cart-foot" id="cart-foot" style="display:none">
+    <div class="cart-subtotal"><span data-en="Subtotal" data-ar="المجموع">Subtotal</span><span id="cart-subtotal-val"></span></div>
+    <div class="cart-delivery"><span data-en="Delivery" data-ar="التوصيل">Delivery</span><span class="free-tag" data-en="FREE" data-ar="مجاني">FREE</span></div>
+    <div class="cart-total-row"><span data-en="Total" data-ar="الإجمالي">Total</span><span id="cart-total-val" class="total-price"></span></div>
+    <a href="checkout.html" class="btn-checkout" data-en="Checkout →" data-ar="إتمام الشراء ←">Checkout →</a>
+    <a href="#" class="btn-continue" onclick="closeCart()" data-en="Continue Shopping" data-ar="مواصلة التسوق">Continue Shopping</a>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// BBC MOBILE — PRODUCT DATABASE
+// To add a product: copy one object, change the fields, save.
+// ============================================================
+
+const BRANDS = [
+  { id:'apple',   name:'Apple',   emoji:'🍎', color:'#555' },
+  { id:'samsung', name:'Samsung', emoji:'🌀', color:'#1428A0' },
+  { id:'huawei',  name:'Huawei',  emoji:'📡', color:'#CF0A2C' },
+  { id:'xiaomi',  name:'Xiaomi',  emoji:'⚡', color:'#FF6900' },
+  { id:'oppo',    name:'OPPO',    emoji:'🟢', color:'#1D8348' },
+  { id:'vivo',    name:'Vivo',    emoji:'🔵', color:'#415FFF' },
+  { id:'realme',  name:'Realme',  emoji:'🔴', color:'#FFD700' },
+  { id:'nokia',   name:'Nokia',   emoji:'📟', color:'#124191' },
+  { id:'motorola',name:'Motorola',emoji:'〽️', color:'#5D5D5D' },
+  { id:'honor',   name:'Honor',   emoji:'🏅', color:'#C0392B' },
+];
+
+const PRODUCTS = [
+  // ── APPLE ──────────────────────────────────────────────
+  { id:1,  brand:'apple',  nameEn:'iPhone 16 Pro Max',      nameAr:'آيفون 16 برو ماكس',      cat:'smartphones', price:389.000, oldPrice:420.000, img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-pro-finish-select-202409-6-9inch-deserttitanium?wid=400&hei=400&fmt=jpeg&qlt=90', isNew:true,  isSale:false, stars:5, desc:'6.9" Super Retina XDR, A18 Pro chip, 48MP ProRAW camera, titanium design' },
+  { id:2,  brand:'apple',  nameEn:'iPhone 16 Pro',          nameAr:'آيفون 16 برو',            cat:'smartphones', price:329.000, oldPrice:null,    img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-pro-finish-select-202409-6-3inch-blacktitanium?wid=400&hei=400&fmt=jpeg&qlt=90', isNew:true,  isSale:false, stars:5, desc:'6.3" Super Retina XDR, A18 Pro chip, 48MP camera, Action Button' },
+  { id:3,  brand:'apple',  nameEn:'iPhone 16',              nameAr:'آيفون 16',                cat:'smartphones', price:249.000, oldPrice:null,    img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-16-finish-select-202409-6-1inch-ultramarine?wid=400&hei=400&fmt=jpeg&qlt=90', isNew:true,  isSale:false, stars:5, desc:'6.1" OLED, A18 chip, 48MP dual camera, USB-C' },
+  { id:4,  brand:'apple',  nameEn:'iPhone 15',              nameAr:'آيفون 15',                cat:'smartphones', price:199.000, oldPrice:239.000, img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-finish-select-202309-6-1inch-pink?wid=400&hei=400&fmt=jpeg&qlt=90', isNew:false, isSale:true,  stars:5, desc:'6.1" OLED, A16 Bionic, 48MP camera, Dynamic Island' },
+  { id:5,  brand:'apple',  nameEn:'iPhone 15 Plus',         nameAr:'آيفون 15 بلس',            cat:'smartphones', price:219.000, oldPrice:259.000, img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-plus-finish-select-202309-6-7inch-yellow?wid=400&hei=400&fmt=jpeg&qlt=90', isNew:false, isSale:true,  stars:4, desc:'6.7" OLED, A16 Bionic, 48MP camera, all-day battery' },
+  { id:6,  brand:'apple',  nameEn:'iPhone 14',              nameAr:'آيفون 14',                cat:'smartphones', price:159.000, oldPrice:199.000, img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-14-finish-select-202209-6-1inch-purple?wid=400&hei=400&fmt=jpeg&qlt=90', isNew:false, isSale:true,  stars:4, desc:'6.1" OLED, A15 Bionic, 12MP camera, Crash Detection' },
+  { id:7,  brand:'apple',  nameEn:'iPad Pro 13" M4',        nameAr:'آيباد برو 13 إنش M4',     cat:'tablets',     price:549.000, oldPrice:null,    img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/ipad-pro-finish-select-202405-13inch-silver-wifi?wid=400&hei=400&fmt=jpeg&qlt=90', isNew:true,  isSale:false, stars:5, desc:'13" Ultra Retina XDR OLED, M4 chip, Apple Pencil Pro' },
+  { id:8,  brand:'apple',  nameEn:'AirPods Pro 2',          nameAr:'إيربودز برو 2',           cat:'accessories', price:89.000,  oldPrice:110.000, img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MQD83?wid=400&hei=400&fmt=jpeg&qlt=90', isNew:false, isSale:true,  stars:5, desc:'Active Noise Cancellation, Adaptive Audio, MagSafe charging' },
+  { id:9,  brand:'apple',  nameEn:'Apple Watch Series 10',  nameAr:'أبل ووتش سيريز 10',       cat:'smartwatches', price:169.000, oldPrice:null,   img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MYE53ref_VW_34FR+watch-case-46-aluminum-jetblack-nc-s10_VW_34FR+watch-face-46-aluminum-jetblack-s10_VW_34FR?wid=400&hei=400&fmt=jpeg&qlt=90', isNew:true, isSale:false, stars:5, desc:'Largest, thinnest Apple Watch, advanced health features' },
+  { id:10, brand:'apple',  nameEn:'Apple Watch Ultra 2',    nameAr:'أبل ووتش ألترا 2',        cat:'smartwatches', price:299.000, oldPrice:null,   img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MQDY3ref_VW_34FR+watch-case-49-titanium-natural-nc-s9_VW_34FR+watch-face-49-titanium-natural-s9_VW_34FR?wid=400&hei=400&fmt=jpeg&qlt=90', isNew:false, isSale:false, stars:5, desc:'Titanium case, 60hr battery, dual-frequency GPS, 100m water resistance' },
+
+  // ── SAMSUNG ────────────────────────────────────────────
+  { id:11, brand:'samsung', nameEn:'Galaxy S25 Ultra',       nameAr:'جالاكسي S25 ألترا',      cat:'smartphones', price:359.000, oldPrice:399.000, img:'https://images.samsung.com/is/image/samsung/p6pim/global/2501/gallery/global-galaxy-s25-ultra-sm-s938-sm-s938bzkgxfe-thumb-542289540?w=400&h=400', isNew:true,  isSale:true,  stars:5, desc:'6.9" QHD+ 120Hz, Snapdragon 8 Elite, 200MP camera, S Pen, 5000mAh' },
+  { id:12, brand:'samsung', nameEn:'Galaxy S25+',            nameAr:'جالاكسي S25 بلس',        cat:'smartphones', price:279.000, oldPrice:null,    img:'https://images.samsung.com/is/image/samsung/p6pim/global/2501/gallery/global-galaxy-s25-sm-s931-sm-s931bzkgxfe-thumb-542289537?w=400&h=400', isNew:true,  isSale:false, stars:5, desc:'6.7" Dynamic AMOLED 2X, Snapdragon 8 Elite, 50MP triple camera' },
+  { id:13, brand:'samsung', nameEn:'Galaxy S25',             nameAr:'جالاكسي S25',            cat:'smartphones', price:229.000, oldPrice:null,    img:'https://images.samsung.com/is/image/samsung/p6pim/global/2501/gallery/global-galaxy-s25-sm-s931-sm-s931bzkgxfe-thumb-542289537?w=400&h=400', isNew:true,  isSale:false, stars:5, desc:'6.2" Dynamic AMOLED 2X, Snapdragon 8 Elite, 50MP triple camera' },
+  { id:14, brand:'samsung', nameEn:'Galaxy Z Fold 6',        nameAr:'جالاكسي Z فولد 6',       cat:'smartphones', price:549.000, oldPrice:599.000, img:'https://images.samsung.com/is/image/samsung/p6pim/global/2407/gallery/global-galaxy-z-fold6-sm-f956-sm-f956bskyxfe-thumb-541835916?w=400&h=400', isNew:true,  isSale:true,  stars:5, desc:'7.6" Foldable AMOLED, Snapdragon 8 Gen 3, 50MP triple camera' },
+  { id:15, brand:'samsung', nameEn:'Galaxy Z Flip 6',        nameAr:'جالاكسي Z فليب 6',       cat:'smartphones', price:299.000, oldPrice:null,    img:'https://images.samsung.com/is/image/samsung/p6pim/global/2407/gallery/global-galaxy-z-flip6-sm-f741-sm-f741blyexfe-thumb-541835812?w=400&h=400', isNew:true,  isSale:false, stars:5, desc:'6.7" Foldable, Snapdragon 8 Gen 3, 50MP dual camera, FlexCam' },
+  { id:16, brand:'samsung', nameEn:'Galaxy A55 5G',          nameAr:'جالاكسي A55 5G',         cat:'smartphones', price:119.000, oldPrice:149.000, img:'https://images.samsung.com/is/image/samsung/p6pim/global/2403/gallery/global-galaxy-a55-sm-a556-sm-a556elvcxfe-thumb-539924148?w=400&h=400', isNew:false, isSale:true,  stars:4, desc:'6.6" Super AMOLED 120Hz, Exynos 1480, 50MP OIS camera, IP67' },
+  { id:17, brand:'samsung', nameEn:'Galaxy A35 5G',          nameAr:'جالاكسي A35 5G',         cat:'smartphones', price:89.000,  oldPrice:109.000, img:'https://images.samsung.com/is/image/samsung/p6pim/global/2403/gallery/global-galaxy-a35-sm-a356-sm-a356ezkcxfe-thumb-539924069?w=400&h=400', isNew:false, isSale:true,  stars:4, desc:'6.6" Super AMOLED 120Hz, Exynos 1380, 50MP triple camera, IP67' },
+  { id:18, brand:'samsung', nameEn:'Galaxy Tab S9 Ultra',    nameAr:'جالاكسي تاب S9 ألترا',   cat:'tablets',     price:399.000, oldPrice:null,    img:'https://images.samsung.com/is/image/samsung/p6pim/global/2308/gallery/global-galaxy-tab-s9-ultra-sm-x910-sm-x910nzaaxfe-thumb-537474936?w=400&h=400', isNew:false, isSale:false, stars:5, desc:'14.6" Dynamic AMOLED 2X, Snapdragon 8 Gen 2, S Pen included' },
+  { id:19, brand:'samsung', nameEn:'Galaxy Watch 7',         nameAr:'جالاكسي ووتش 7',         cat:'smartwatches', price:149.000, oldPrice:null,   img:'https://images.samsung.com/is/image/samsung/p6pim/global/2407/gallery/global-galaxy-watch7-sm-l300-sm-l300nzsaxfe-thumb-541785424?w=400&h=400', isNew:true, isSale:false, stars:5, desc:'Advanced health & fitness tracking, Exynos W1000, 40mm / 44mm' },
+  { id:20, brand:'samsung', nameEn:'Galaxy Buds3 Pro',       nameAr:'جالاكسي بودز 3 برو',     cat:'accessories', price:79.000,  oldPrice:99.000,  img:'https://images.samsung.com/is/image/samsung/p6pim/global/2407/gallery/global-galaxy-buds3-pro-sm-r630-sm-r630nzaaxfe-thumb-541869084?w=400&h=400', isNew:true,  isSale:true,  stars:4, desc:'ANC, Hi-Fi audio, Blade design, 360° Audio, 30hr total battery' },
+
+  // ── HUAWEI ─────────────────────────────────────────────
+  { id:21, brand:'huawei', nameEn:'Pura 70 Ultra',           nameAr:'بيورا 70 ألترا',         cat:'smartphones', price:399.000, oldPrice:null,    img:'https://consumer.huawei.com/content/dam/huawei-cbg-site/common/mkt/pdp/phones/pura70-ultra/images/overview/pura-70-ultra-black-kv.png', isNew:true,  isSale:false, stars:5, desc:'Variable aperture camera, Kirin 9010, satellite connectivity, 1" sensor' },
+  { id:22, brand:'huawei', nameEn:'Pura 70 Pro',             nameAr:'بيورا 70 برو',           cat:'smartphones', price:299.000, oldPrice:null,    img:'https://consumer.huawei.com/content/dam/huawei-cbg-site/common/mkt/pdp/phones/pura70-pro/images/overview/pura-70-pro-black-kv.png', isNew:true,  isSale:false, stars:5, desc:'6.8" OLED, Kirin 9010, 50MP variable aperture, 80W fast charge' },
+  { id:23, brand:'huawei', nameEn:'Mate 60 Pro',             nameAr:'ميت 60 برو',             cat:'smartphones', price:349.000, oldPrice:null,    img:'https://consumer.huawei.com/content/dam/huawei-cbg-site/common/mkt/pdp/phones/mate60-pro/images/overview/mate-60-pro-black.png', isNew:false, isSale:false, stars:5, desc:'6.82" OLED, Kirin 9000s, satellite calling, 50MP triple camera' },
+  { id:24, brand:'huawei', nameEn:'Nova 12 Pro',             nameAr:'نوفا 12 برو',            cat:'smartphones', price:179.000, oldPrice:209.000, img:'https://consumer.huawei.com/content/dam/huawei-cbg-site/common/mkt/pdp/phones/nova12-pro/images/overview/nova-12-pro-black.png', isNew:false, isSale:true,  stars:4, desc:'6.76" OLED 120Hz, 60MP front camera, 100W super fast charge' },
+  { id:25, brand:'huawei', nameEn:'MatePad Pro 13.2"',       nameAr:'ميت باد برو 13.2 إنش',   cat:'tablets',     price:379.000, oldPrice:null,    img:'https://consumer.huawei.com/content/dam/huawei-cbg-site/common/mkt/pdp/tablets/matepad-pro-132/images/overview/matepad-pro-132-black.png', isNew:true, isSale:false, stars:5, desc:'13.2" OLED 144Hz, Kirin 9000s, M-Pencil 3rd gen, 13600mAh' },
+  { id:26, brand:'huawei', nameEn:'Watch Ultimate',          nameAr:'ووتش ألتيميت',           cat:'smartwatches', price:649.000, oldPrice:null,   img:'https://consumer.huawei.com/content/dam/huawei-cbg-site/common/mkt/pdp/wearables/watch-ultimate/images/overview/watch-ultimate-black.png', isNew:false, isSale:false, stars:5, desc:'Zirconium ceramic, expedition watch, satellite positioning, 14-day battery' },
+  { id:27, brand:'huawei', nameEn:'FreeBuds Pro 3',          nameAr:'فري بودز برو 3',         cat:'accessories', price:69.000,  oldPrice:89.000,  img:'https://consumer.huawei.com/content/dam/huawei-cbg-site/common/mkt/pdp/headphones/freebuds-pro-3/images/overview/freebuds-pro-3-black.png', isNew:false, isSale:true,  stars:4, desc:'Intelligent ANC 3.0, Hi-Res Audio Wireless, 31hr battery' },
+
+  // ── XIAOMI ─────────────────────────────────────────────
+  { id:28, brand:'xiaomi', nameEn:'Xiaomi 14 Ultra',         nameAr:'شاومي 14 ألترا',         cat:'smartphones', price:389.000, oldPrice:null,    img:'https://i01.appmifile.com/v1/MI_18455B3E4DA706226CF7535A58E875F55D16A1B3575B7D48B7D1B4A70E4D009/pxm/images/products/item/i230119096601413.png', isNew:true,  isSale:false, stars:5, desc:'6.73" LTPO AMOLED, Snapdragon 8 Gen 3, Leica 1" 50MP camera, 90W' },
+  { id:29, brand:'xiaomi', nameEn:'Xiaomi 14',               nameAr:'شاومي 14',               cat:'smartphones', price:249.000, oldPrice:289.000, img:'https://i01.appmifile.com/v1/MI_18455B3E4DA706226CF7535A58E875F55D16A1B3575B7D48B7D1B4A70E4D009/pxm/images/products/item/i230119091442693.png', isNew:false, isSale:true,  stars:5, desc:'6.36" AMOLED 120Hz, Snapdragon 8 Gen 3, Leica 50MP triple camera' },
+  { id:30, brand:'xiaomi', nameEn:'Redmi Note 13 Pro+',      nameAr:'ريدمي نوت 13 برو بلس',   cat:'smartphones', price:149.000, oldPrice:179.000, img:'https://i01.appmifile.com/v1/MI_18455B3E4DA706226CF7535A58E875F55D16A1B3575B7D48B7D1B4A70E4D009/pxm/images/products/item/i230516070018897.png', isNew:false, isSale:true,  stars:4, desc:'6.67" AMOLED 120Hz, 200MP camera, 120W HyperCharge, IP68' },
+  { id:31, brand:'xiaomi', nameEn:'Redmi Note 13 5G',        nameAr:'ريدمي نوت 13 5G',        cat:'smartphones', price:89.000,  oldPrice:109.000, img:'https://i01.appmifile.com/v1/MI_18455B3E4DA706226CF7535A58E875F55D16A1B3575B7D48B7D1B4A70E4D009/pxm/images/products/item/i230516065927272.png', isNew:false, isSale:true,  stars:4, desc:'6.67" AMOLED 120Hz, Snapdragon 685, 108MP camera, 5G' },
+  { id:32, brand:'xiaomi', nameEn:'Xiaomi Pad 6S Pro',       nameAr:'شاومي باد 6S برو',       cat:'tablets',     price:199.000, oldPrice:null,    img:'https://i01.appmifile.com/v1/MI_18455B3E4DA706226CF7535A58E875F55D16A1B3575B7D48B7D1B4A70E4D009/pxm/images/products/item/i240307091730234.png', isNew:true, isSale:false, stars:5, desc:'12.4" 3K LCD 144Hz, Snapdragon 8 Gen 3, 10,000mAh, 120W charge' },
+  { id:33, brand:'xiaomi', nameEn:'Redmi Buds 5 Pro',        nameAr:'ريدمي بودز 5 برو',       cat:'accessories', price:39.000,  oldPrice:49.000,  img:'https://i01.appmifile.com/v1/MI_18455B3E4DA706226CF7535A58E875F55D16A1B3575B7D48B7D1B4A70E4D009/pxm/images/products/item/i230516080008789.png', isNew:false, isSale:true,  stars:4, desc:'50dB ANC, Hi-Res Audio, 38hr total battery, LDAC' },
+
+  // ── OPPO ───────────────────────────────────────────────
+  { id:34, brand:'oppo', nameEn:'Find X8 Pro',               nameAr:'فايند X8 برو',           cat:'smartphones', price:329.000, oldPrice:null,    img:'https://image.oppo.com/content/dam/oppo/common/mkt/productpage/find-x8-pro/img/oppo-find-x8-pro-black-kv.png', isNew:true,  isSale:false, stars:5, desc:'6.78" AMOLED 120Hz, Dimensity 9400, Hasselblad 50MP quad camera, IP69' },
+  { id:35, brand:'oppo', nameEn:'Find X8',                   nameAr:'فايند X8',               cat:'smartphones', price:249.000, oldPrice:null,    img:'https://image.oppo.com/content/dam/oppo/common/mkt/productpage/find-x8/img/oppo-find-x8-black-kv.png', isNew:true,  isSale:false, stars:5, desc:'6.59" AMOLED 120Hz, Dimensity 9400, Hasselblad 50MP triple camera' },
+  { id:36, brand:'oppo', nameEn:'Reno 12 Pro',               nameAr:'رينو 12 برو',            cat:'smartphones', price:169.000, oldPrice:199.000, img:'https://image.oppo.com/content/dam/oppo/common/mkt/productpage/reno12-pro/img/oppo-reno12-pro-black-kv.png', isNew:false, isSale:true,  stars:4, desc:'6.7" AMOLED 120Hz, Dimensity 9200+, 50MP triple camera, 80W charge' },
+  { id:37, brand:'oppo', nameEn:'A60',                       nameAr:'A60',                    cat:'smartphones', price:69.000,  oldPrice:89.000,  img:'https://image.oppo.com/content/dam/oppo/common/mkt/productpage/a60/img/oppo-a60-black-kv.png', isNew:false, isSale:true,  stars:3, desc:'6.67" LCD 120Hz, Snapdragon 680, 50MP dual camera, 5000mAh' },
+  { id:38, brand:'oppo', nameEn:'Enco X3',                   nameAr:'إنكو X3',                cat:'accessories', price:49.000,  oldPrice:69.000,  img:'https://image.oppo.com/content/dam/oppo/common/mkt/productpage/enco-x3/img/enco-x3-black.png', isNew:false, isSale:true,  stars:4, desc:'ANC 55dB, LDAC, 25hr battery, Dynaudio co-engineered' },
+
+  // ── VIVO ───────────────────────────────────────────────
+  { id:39, brand:'vivo', nameEn:'X200 Pro',                  nameAr:'X200 برو',               cat:'smartphones', price:349.000, oldPrice:null,    img:'https://www.vivo.com/content/dam/vivo-website/vivo-website-2024/en/products/x200-pro/images/overview/x200-pro-black.png', isNew:true,  isSale:false, stars:5, desc:'6.78" LTPO AMOLED, Dimensity 9400, Zeiss 200MP periscope camera, 6000mAh' },
+  { id:40, brand:'vivo', nameEn:'X200',                      nameAr:'X200',                   cat:'smartphones', price:249.000, oldPrice:null,    img:'https://www.vivo.com/content/dam/vivo-website/vivo-website-2024/en/products/x200/images/overview/x200-black.png', isNew:true,  isSale:false, stars:4, desc:'6.67" AMOLED 120Hz, Dimensity 9400, Zeiss 50MP triple camera, 5800mAh' },
+  { id:41, brand:'vivo', nameEn:'V30 Pro',                   nameAr:'V30 برو',                cat:'smartphones', price:169.000, oldPrice:199.000, img:'https://www.vivo.com/content/dam/vivo-website/vivo-website-2024/en/products/v30-pro/images/overview/v30-pro-black.png', isNew:false, isSale:true,  stars:4, desc:'6.78" AMOLED 120Hz, Dimensity 8200, 50MP Aura Light camera, 80W charge' },
+  { id:42, brand:'vivo', nameEn:'Y200 GT',                   nameAr:'Y200 GT',                cat:'smartphones', price:89.000,  oldPrice:null,    img:'https://www.vivo.com/content/dam/vivo-website/vivo-website-2024/en/products/y200gt/images/overview/y200gt-black.png', isNew:true,  isSale:false, stars:4, desc:'6.78" AMOLED 144Hz, Snapdragon 7 Gen 3, 64MP, 6500mAh 44W' },
+
+  // ── REALME ─────────────────────────────────────────────
+  { id:43, brand:'realme', nameEn:'GT 7 Pro',                nameAr:'GT 7 برو',               cat:'smartphones', price:249.000, oldPrice:null,    img:'https://image.realme.com/content/dam/document/products/gt7pro/images/realme-gt7pro-black.png', isNew:true,  isSale:false, stars:5, desc:'6.78" LTPO AMOLED, Snapdragon 8 Elite, 50MP Sony camera, 120W charge' },
+  { id:44, brand:'realme', nameEn:'12 Pro+ 5G',              nameAr:'12 برو بلس 5G',          cat:'smartphones', price:149.000, oldPrice:179.000, img:'https://image.realme.com/content/dam/document/products/12pro-plus/images/realme-12-pro-plus-black.png', isNew:false, isSale:true,  stars:4, desc:'6.7" AMOLED 120Hz, Snapdragon 7s Gen 2, 50MP periscope camera' },
+  { id:45, brand:'realme', nameEn:'C67 5G',                  nameAr:'C67 5G',                 cat:'smartphones', price:69.000,  oldPrice:85.000,  img:'https://image.realme.com/content/dam/document/products/c67-5g/images/realme-c67-5g-black.png', isNew:false, isSale:true,  stars:3, desc:'6.72" LCD 90Hz, Snapdragon 695 5G, 108MP, 5000mAh 33W' },
+
+  // ── NOKIA ──────────────────────────────────────────────
+  { id:46, brand:'nokia', nameEn:'G42 5G',                   nameAr:'G42 5G',                 cat:'smartphones', price:79.000,  oldPrice:null,    img:'https://www.nokia.com/sites/default/files/styles/scale_720/public/2023-09/Nokia_G42_5G_Purple_Front_Back.webp', isNew:false, isSale:false, stars:3, desc:'6.56" HD+ LCD, Snapdragon 480+, 50MP triple camera, repairable design' },
+  { id:47, brand:'nokia', nameEn:'C32',                      nameAr:'C32',                    cat:'smartphones', price:39.000,  oldPrice:null,    img:'https://www.nokia.com/sites/default/files/styles/scale_720/public/2023-07/Nokia_C32_Beach_Pink_FrontBack.webp', isNew:false, isSale:false, stars:3, desc:'6.5" HD+ LCD, Unisoc T606, 50MP dual camera, 5000mAh, Android 13' },
+
+  // ── MOTOROLA ───────────────────────────────────────────
+  { id:48, brand:'motorola', nameEn:'Edge 50 Ultra',         nameAr:'إيدج 50 ألترا',          cat:'smartphones', price:219.000, oldPrice:249.000, img:'https://motorola-global-portal.custhelp.com/ci/fattach/get/30613/0/redirect/1', isNew:false, isSale:true,  stars:4, desc:'6.67" pOLED 165Hz, Snapdragon 8s Gen 3, 50MP Pantone camera, 125W' },
+  { id:49, brand:'motorola', nameEn:'Razr 50 Ultra',         nameAr:'رازر 50 ألترا',          cat:'smartphones', price:299.000, oldPrice:null,    img:'https://motorola-global-portal.custhelp.com/ci/fattach/get/30614/0/redirect/1', isNew:true,  isSale:false, stars:5, desc:'3.6" + 6.9" foldable pOLED, Snapdragon 8s Gen 3, 50MP Pantone camera' },
+
+  // ── HONOR ──────────────────────────────────────────────
+  { id:50, brand:'honor', nameEn:'Magic 7 Pro',              nameAr:'ماجيك 7 برو',            cat:'smartphones', price:319.000, oldPrice:null,    img:'https://www.hihonor.com/content/dam/honor/global/products/smartphones/magic7pro/img/magic7pro-black.png', isNew:true,  isSale:false, stars:5, desc:'6.8" LTPO AMOLED, Snapdragon 8 Elite, 50MP triple camera, 80W charge' },
+  { id:51, brand:'honor', nameEn:'200 Pro',                  nameAr:'200 برو',                cat:'smartphones', price:199.000, oldPrice:229.000, img:'https://www.hihonor.com/content/dam/honor/global/products/smartphones/honor200pro/img/honor200pro-black.png', isNew:false, isSale:true,  stars:4, desc:'6.78" LTPO AMOLED, Snapdragon 8s Gen 3, 50MP Harcourt Studio camera' },
+
+  // ── ACCESSORIES (generic) ──────────────────────────────
+  { id:52, brand:'samsung', nameEn:'45W USB-C Charger',      nameAr:'شاحن USB-C 45W',         cat:'accessories', price:15.000,  oldPrice:null,    img:'https://images.samsung.com/is/image/samsung/p6pim/global/ep-ta845xbngin/gallery/global-ep-ta845xbngin-ep-ta845xbngin-thumb-497034929?w=400&h=400', isNew:false, isSale:false, stars:4, desc:'45W Super Fast Charging 2.0, USB-C, compatible with Galaxy S series' },
+  { id:53, brand:'apple',   nameEn:'MagSafe Charger 25W',    nameAr:'شاحن ماغ سيف 25W',       cat:'accessories', price:25.000,  oldPrice:null,    img:'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MQKQ3?wid=400&hei=400&fmt=jpeg&qlt=90', isNew:true,  isSale:false, stars:5, desc:'25W MagSafe charging for iPhone 12 and later, USB-C cable' },
+  { id:54, brand:'xiaomi',  nameEn:'Redmi Watch 4',          nameAr:'ريدمي ووتش 4',           cat:'smartwatches', price:29.000, oldPrice:39.000,  img:'https://i01.appmifile.com/v1/MI_18455B3E4DA706226CF7535A58E875F55D16A1B3575B7D48B7D1B4A70E4D009/pxm/images/products/item/i231111091433424.png', isNew:false, isSale:true,  stars:4, desc:'1.97" AMOLED, 20-day battery, SpO2, GPS, 150+ workout modes' },
+  { id:55, brand:'oppo',    nameEn:'Watch X',                nameAr:'ووتش X',                 cat:'smartwatches', price:99.000, oldPrice:null,    img:'https://image.oppo.com/content/dam/oppo/common/mkt/productpage/watch-x/img/oppo-watch-x-black.png', isNew:true,  isSale:false, stars:4, desc:'1.43" AMOLED, Snapdragon W5 Gen 1, health suite, 30-day battery' },
+];
+
+// ── MERGED PRODUCTS (hardcoded + admin-added) ─────────────
+function getAllProducts() {
+  const overrides = JSON.parse(localStorage.getItem('bbc_stock_overrides') || '{}');
+  const adminProds = JSON.parse(localStorage.getItem('bbc_admin_products') || '[]');
+  const publishedAdmin = adminProds.filter(p => p.status === 'published').map(p => ({
+    id: p.id,
+    brand: p.brand,
+    nameEn: p.nameEn,
+    nameAr: p.nameAr || p.nameEn,
+    cat: p.cat,
+    price: p.price,
+    oldPrice: p.oldPrice || null,
+    img: p.photos && p.photos.length ? p.photos[0].src : null,
+    emoji: '📱',
+    isNew: p.isNew || false,
+    isSale: p.isSale || false,
+    soldOut: overrides[p.id] !== undefined ? overrides[p.id] : (p.soldOut || false),
+    stockQty: p.stockQty || null,
+    stars: p.stars || 4,
+    desc: p.descEn || '',
+    _isAdminProduct: true
+  }));
+  const hardcoded = PRODUCTS.map(p => ({
+    ...p,
+    soldOut: overrides[p.id] !== undefined ? overrides[p.id] : (p.soldOut || false)
+  }));
+  return [...publishedAdmin, ...hardcoded];
+}
+
+// ── RENDER FUNCTIONS ──────────────────────────────────────
+
+function starHTML(n) {
+  let s = '';
+  for (let i = 1; i <= 5; i++) s += `<span class="star ${i<=n?'filled':''}" aria-hidden="true">★</span>`;
+  return `<div class="stars" role="img" aria-label="${n} out of 5 stars">${s}</div>`;
+}
+
+function productCardHTML(p, isAr) {
+  const name = isAr ? p.nameAr : p.nameEn;
+  const brand = BRANDS.find(b => b.id === p.brand);
+  const brandName = brand ? brand.name : p.brand;
+  const discount = p.oldPrice ? Math.round((1 - p.price/p.oldPrice)*100) : null;
+  return `
+    <div class="product-card ${p.soldOut?'sold-out':''}" data-id="${p.id}" data-brand="${p.brand}" data-cat="${p.cat}" onclick="location.href='product.html?id='+p.id" style="cursor:pointer">
+      <div class="product-img-wrap">
+        ${p.soldOut ? `<div class="sold-out-overlay"><div class="sold-out-tag">Sold Out</div></div>` : ''}
+        <img src="${p.img || ''}" alt="${name}" class="product-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" style="${!p.img?'display:none':''}">
+        <div style="${p.img?'display:none':'display:flex'};align-items:center;justify-content:center;font-size:52px;width:100%;height:100%">${brand?.emoji||'📱'}</div>
+        ${p.isNew ? `<span class="badge badge-new" data-en="New" data-ar="جديد">New</span>` : ''}
+        ${p.isSale && discount ? `<span class="badge badge-sale">-${discount}%</span>` : ''}
+        <button class="wishlist-btn" onclick="event.stopPropagation();toggleWishlist(${p.id},event)" title="Add to wishlist" aria-label="Add to wishlist">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+      </div>
+      <div class="product-info">
+        <div class="product-brand">${brandName}</div>
+        <div class="product-name" style="color:var(--text);transition:color .2s" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text)'">${name}</div>
+        ${starHTML(p.stars)}
+        <div class="product-pricing">
+          <span class="product-price">${p.price.toFixed(3)} <small>OMR</small></span>
+          ${p.oldPrice ? `<span class="product-old-price">${p.oldPrice.toFixed(3)}</span>` : ''}
+        </div>
+        ${p.soldOut
+          ? `<button class="btn-sold-out" disabled>
+               🚫 <span data-en="Sold Out" data-ar="نفذت الكمية">Sold Out</span>
+             </button>`
+          : `<button class="btn-add-cart" onclick="event.stopPropagation();addToCart(${p.id})">
+               <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+               <span data-en="Add to Cart" data-ar="أضف للسلة">Add to Cart</span>
+             </button>`
+        }
+      </div>
+    </div>
+  `;
+}
+
+function renderBrands() {
+  const grid = document.getElementById('brands-grid');
+  if (!grid) return;
+  grid.innerHTML = BRANDS.map(b => `
+    <a href="products.html?brand=${b.id}" class="brand-card">
+      <div class="brand-emoji">${b.emoji}</div>
+      <div class="brand-name">${b.name}</div>
+      <div class="brand-count">${PRODUCTS.filter(p=>p.brand===b.id).length} products</div>
+    </a>
+  `).join('');
+}
+
+let homeFilter = 'all';
+function renderHomeProducts(cat) {
+  homeFilter = cat;
+  const grid = document.getElementById('home-products');
+  if (!grid) return;
+  const isAr = document.getElementById('body').classList.contains('ar');
+  const filtered = cat === 'all' ? PRODUCTS.slice(0,16) : PRODUCTS.filter(p=>p.brand===cat||p.cat===cat).slice(0,16);
+  grid.innerHTML = filtered.map(p => productCardHTML(p, isAr)).join('');
+  updateLangElements();
+}
+
+function filterHome(btn, cat) {
+  document.querySelectorAll('.ftab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  renderHomeProducts(cat);
+}
+
+function renderAllProducts(filter) {
+  const grid = document.getElementById('all-products');
+  if (!grid) return;
+  const isAr = document.getElementById('body').classList.contains('ar');
+  let list = [...getAllProducts()];
+  if (filter && filter.brand) list = list.filter(p=>p.brand===filter.brand);
+  if (filter && filter.cat) list = list.filter(p=>p.cat===filter.cat);
+  if (filter && filter.sale) list = list.filter(p=>p.isSale);
+  if (filter && filter.q) {
+    const q = filter.q.toLowerCase();
+    list = list.filter(p=>p.nameEn.toLowerCase().includes(q)||p.nameAr.includes(q)||p.brand.includes(q));
+  }
+  if (filter && filter.maxPrice) list = list.filter(p=>p.price<=filter.maxPrice);
+  if (filter && filter.sort === 'price-asc') list.sort((a,b)=>a.price-b.price);
+  if (filter && filter.sort === 'price-desc') list.sort((a,b)=>b.price-a.price);
+  if (filter && filter.sort === 'new') list = list.filter(p=>p.isNew).concat(list.filter(p=>!p.isNew));
+
+  const countEl = document.getElementById('product-count');
+  if (countEl) countEl.textContent = list.length;
+
+  grid.innerHTML = list.length
+    ? list.map(p => productCardHTML(p, isAr)).join('')
+    : `<div class="no-results"><div style="font-size:48px">🔍</div><p data-en="No products found" data-ar="لم يتم العثور على منتجات">No products found</p></div>`;
+  updateLangElements();
+}
+
+function handleSearch(q) {
+  const drop = document.getElementById('search-dropdown');
+  if (!drop) return;
+  if (!q || q.length < 2) { drop.innerHTML=''; drop.style.display='none'; return; }
+  const isAr = document.getElementById('body').classList.contains('ar');
+  const results = getAllProducts().filter(p=>
+    p.nameEn.toLowerCase().includes(q.toLowerCase())||
+    p.nameAr.includes(q)||
+    p.brand.includes(q.toLowerCase())
+  ).slice(0,6);
+  if (!results.length) { drop.innerHTML=''; drop.style.display='none'; return; }
+  drop.innerHTML = results.map(p=>`
+    <a href="product.html?id=${p.id}" class="search-result-item">
+      <img src="${p.img}" alt="${isAr?p.nameAr:p.nameEn}" width="40" height="40" onerror="this.style.display='none'">
+      <div>
+        <div class="sr-name">${isAr?p.nameAr:p.nameEn}</div>
+        <div class="sr-price">${p.price.toFixed(3)} OMR</div>
+      </div>
+    </a>
+  `).join('');
+  drop.style.display='block';
+}
+
+document.addEventListener('click', e => {
+  const drop = document.getElementById('search-dropdown');
+  if (drop && !drop.contains(e.target) && e.target.id !== 'search-input') {
+    drop.style.display = 'none';
+  }
+});
+
+// ── CART ──────────────────────────────────────────────────
+let cart = JSON.parse(localStorage.getItem('bbc_cart')||'[]');
+let wishlist = JSON.parse(localStorage.getItem('bbc_wish')||'[]');
+
+function saveCart() { localStorage.setItem('bbc_cart', JSON.stringify(cart)); }
+function saveWish() { localStorage.setItem('bbc_wish', JSON.stringify(wishlist)); }
+
+function addToCart(id, qty=1) {
+  const p = getAllProducts().find(x=>x.id===id);
+  if(!p) return;
+  const existing = cart.find(x=>x.id===id);
+  if(existing) { existing.qty += qty; } else { cart.push({...p, qty}); }
+  saveCart();
+  updateCartUI();
+  openCart();
+  showToast(document.getElementById('body').classList.contains('ar') ? 'تمت الإضافة إلى السلة ✓' : 'Added to cart ✓');
+}
+
+function removeFromCart(id) {
+  cart = cart.filter(x=>x.id!==id);
+  saveCart();
+  updateCartUI();
+}
+
+function changeQty(id, delta) {
+  const item = cart.find(x=>x.id===id);
+  if(!item) return;
+  item.qty = Math.max(1, item.qty+delta);
+  saveCart();
+  updateCartUI();
+}
+
+function updateCartUI() {
+  const isAr = document.getElementById('body').classList.contains('ar');
+  const totalQty = cart.reduce((a,c)=>a+c.qty, 0);
+  const totalVal = cart.reduce((a,c)=>a+c.price*c.qty, 0);
+  document.getElementById('cart-count').textContent = totalQty;
+
+  const list = document.getElementById('cart-items-list');
+  const foot = document.getElementById('cart-foot');
+  if(!list) return;
+
+  if(!cart.length) {
+    list.innerHTML = `<div class="empty-cart"><div class="empty-icon">🛒</div><p>${isAr?'سلتك فارغة':'Your cart is empty'}</p></div>`;
+    if(foot) foot.style.display='none';
+    return;
+  }
+
+  list.innerHTML = cart.map(p=>`
+    <div class="cart-item">
+      <img src="${p.img}" alt="${isAr?p.nameAr:p.nameEn}" class="cart-item-img" onerror="this.style.display='none'">
+      <div class="cart-item-info">
+        <div class="cart-item-name">${isAr?p.nameAr:p.nameEn}</div>
+        <div class="cart-item-price">${(p.price*p.qty).toFixed(3)} OMR</div>
+        <div class="cart-qty-ctrl">
+          <button onclick="changeQty(${p.id},-1)" aria-label="Decrease">−</button>
+          <span>${p.qty}</span>
+          <button onclick="changeQty(${p.id},1)" aria-label="Increase">+</button>
+        </div>
+      </div>
+      <button class="cart-remove" onclick="removeFromCart(${p.id})" aria-label="Remove">✕</button>
+    </div>
+  `).join('');
+
+  if(foot) {
+    foot.style.display='block';
+    const sv = document.getElementById('cart-subtotal-val');
+    const tv = document.getElementById('cart-total-val');
+    if(sv) sv.textContent = `${totalVal.toFixed(3)} ${isAr?'ر.ع.':'OMR'}`;
+    if(tv) tv.textContent = `${totalVal.toFixed(3)} ${isAr?'ر.ع.':'OMR'}`;
+  }
+}
+
+function openCart() {
+  document.getElementById('cart-overlay').classList.add('open');
+  document.getElementById('cart-sidebar').classList.add('open');
+  updateCartUI();
+}
+function closeCart() {
+  document.getElementById('cart-overlay').classList.remove('open');
+  document.getElementById('cart-sidebar').classList.remove('open');
+}
+
+// ── WISHLIST ───────────────────────────────────────────────
+function toggleWishlist(id, e) {
+  if(e) e.stopPropagation();
+  const idx = wishlist.indexOf(id);
+  if(idx>-1) { wishlist.splice(idx,1); } else { wishlist.push(id); }
+  saveWish();
+  updateWishUI();
+  const isAr = document.getElementById('body').classList.contains('ar');
+  showToast(wishlist.includes(id) ? (isAr?'أضيف إلى المفضلة ♥':'Added to wishlist ♥') : (isAr?'تمت الإزالة من المفضلة':'Removed from wishlist'));
+}
+
+function updateWishUI() {
+  const el = document.getElementById('wish-count');
+  if(el) { el.textContent=wishlist.length; el.style.display=wishlist.length?'flex':'none'; }
+  document.querySelectorAll('.wishlist-btn').forEach(btn=>{
+    const id = parseInt(btn.closest('.product-card')?.dataset?.id);
+    btn.classList.toggle('active', wishlist.includes(id));
+  });
+}
+
+// ── STOCK HELPERS ──────────────────────────────────────────
+function updateStockLabel() {
+  const soldOut = document.getElementById('f-sold-out');
+  const inLabel = document.getElementById('stock-in-label');
+  const outLabel = document.getElementById('stock-out-label');
+  if (!soldOut) return;
+  if (soldOut.checked) {
+    if (outLabel) outLabel.style.cssText += ';border-color:#e63946;background:#fff5f5;color:#e63946';
+    if (inLabel)  inLabel.style.cssText  += ';border-color:var(--border);background:#fff;color:var(--text)';
+  } else {
+    if (inLabel)  inLabel.style.cssText  += ';border-color:#10b981;background:#f0fdf4;color:#065f46';
+    if (outLabel) outLabel.style.cssText += ';border-color:var(--border);background:#fff;color:var(--text)';
+  }
+}
+
+// Auto-mark sold out when qty = 0
+document.addEventListener('input', function(e) {
+  if (e.target.id === 'f-stock-qty') {
+    const qty = parseInt(e.target.value);
+    const soldOutEl = document.getElementById('f-sold-out');
+    const inStockEl = document.getElementById('f-in-stock');
+    if (!isNaN(qty) && qty === 0 && soldOutEl) {
+      soldOutEl.checked = true;
+      updateStockLabel();
+    } else if (!isNaN(qty) && qty > 0 && inStockEl) {
+      inStockEl.checked = true;
+      updateStockLabel();
+    }
+  }
+});
+
+
+// ── TOAST ──────────────────────────────────────────────────
+function showToast(msg) {
+  let t = document.getElementById('toast');
+  if(!t) {
+    t = document.createElement('div'); t.id='toast';
+    t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a1a2e;color:#fff;padding:12px 24px;border-radius:8px;font-size:14px;font-weight:500;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap';
+    document.body.appendChild(t);
+  }
+  t.textContent=msg; t.style.opacity='1';
+  setTimeout(()=>t.style.opacity='0', 2500);
+}
+
+updateCartUI();
+updateWishUI();
+
+// ── LANGUAGE ───────────────────────────────────────────────
+let isAr = localStorage.getItem('bbc_lang') === 'ar';
+
+function toggleLang() {
+  isAr = !isAr;
+  localStorage.setItem('bbc_lang', isAr?'ar':'en');
+  applyLang();
+}
+
+function applyLang() {
+  const body = document.getElementById('body');
+  body.classList.toggle('ar', isAr);
+  document.documentElement.setAttribute('dir', isAr?'rtl':'ltr');
+  document.documentElement.setAttribute('lang', isAr?'ar':'en');
+  document.getElementById('lang-btn').textContent = isAr ? 'English' : 'عربي';
+  const si = document.getElementById('search-input');
+  if(si) si.placeholder = isAr ? 'ابحث عن هواتف وإكسسوارات...' : 'Search phones, brands, accessories...';
+  updateLangElements();
+  // Re-render products with correct language
+  if(typeof renderHomeProducts === 'function') renderHomeProducts(homeFilter||'all');
+  if(typeof renderAllProducts === 'function') renderAllProducts(currentFilter||{});
+  updateCartUI();
+}
+
+function updateLangElements() {
+  document.querySelectorAll('[data-en]').forEach(el => {
+    el.textContent = el.getAttribute(isAr ? 'data-ar' : 'data-en');
+  });
+}
+
+// ── COUNTDOWN ─────────────────────────────────────────────
+function startCountdown() {
+  let secs = 5*3600 + 42*60 + 18;
+  function tick() {
+    secs = Math.max(0, secs-1);
+    const h = Math.floor(secs/3600), m = Math.floor((secs%3600)/60), s = secs%60;
+    const hEl=document.getElementById('cd-h'), mEl=document.getElementById('cd-m'), sEl=document.getElementById('cd-s');
+    if(hEl) hEl.textContent = String(h).padStart(2,'0');
+    if(mEl) mEl.textContent = String(m).padStart(2,'0');
+    if(sEl) sEl.textContent = String(s).padStart(2,'0');
+  }
+  tick();
+  setInterval(tick, 1000);
+}
+
+// ── APPLY ON LOAD ─────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  applyLang();
+});
+
+</script>
+<script>
+let currentFilter = {};
+
+function openFilter() {
+  document.getElementById('filter-overlay').classList.add('open');
+  document.getElementById('filter-drawer').classList.add('open');
+}
+function closeFilter() {
+  document.getElementById('filter-overlay').classList.remove('open');
+  document.getElementById('filter-drawer').classList.remove('open');
+}
+function applyAndClose() {
+  applySidebar();
+  closeFilter();
+}
+
+function readURLParams() {
+  const p = new URLSearchParams(location.search);
+  if(p.get('brand')) {
+    currentFilter.brand = p.get('brand');
+    const el = document.querySelector(`[data-filter=brand][value="${p.get('brand')}"]`);
+    if(el) el.checked = true;
+  }
+  if(p.get('cat')) {
+    currentFilter.cat = p.get('cat');
+    const el = document.querySelector(`[data-filter=cat][value="${p.get('cat')}"]`);
+    if(el) el.checked = true;
+  }
+  if(p.get('sale')) { currentFilter.sale = true; }
+  const titles = { apple:'Apple iPhones', samsung:'Samsung Galaxy', huawei:'Huawei Phones', xiaomi:'Xiaomi Phones', oppo:'OPPO Phones', vivo:'Vivo Phones', realme:'Realme Phones', nokia:'Nokia Phones', motorola:'Motorola Phones', honor:'Honor Phones', accessories:'Accessories', tablets:'Tablets', smartwatches:'Smartwatches' };
+  const key = p.get('brand')||p.get('cat');
+  if(key && titles[key]) document.getElementById('page-title').textContent = titles[key];
+  if(p.get('sale')) document.getElementById('page-title').textContent = '🔥 Flash Sale Deals';
+  updateFilterBadge();
+}
+
+function applySidebar() {
+  const brands = [...document.querySelectorAll('[data-filter=brand]:checked')].map(i=>i.value);
+  const cats   = [...document.querySelectorAll('[data-filter=cat]:checked')].map(i=>i.value);
+  const maxP   = parseInt(document.getElementById('price-range').value);
+  const sort   = document.getElementById('sort-select').value;
+  currentFilter = { maxPrice: maxP, sort };
+  if(brands.length) currentFilter.brands = brands;
+  if(brands.length===1) currentFilter.brand = brands[0];
+  if(cats.length===1) currentFilter.cat = cats[0];
+  updateFilterBadge();
+  updateActiveTags();
+  renderAllProducts(currentFilter);
+}
+
+function clearFilters() {
+  document.querySelectorAll('[data-filter]').forEach(i=>i.checked=false);
+  document.getElementById('price-range').value=700;
+  document.getElementById('price-val').textContent=700;
+  document.getElementById('sort-select').value='';
+  currentFilter={};
+  updateFilterBadge();
+  updateActiveTags();
+  renderAllProducts({});
+}
+
+function updateFilterBadge() {
+  const brands = [...document.querySelectorAll('[data-filter=brand]:checked')].length;
+  const cats   = [...document.querySelectorAll('[data-filter=cat]:checked')].length;
+  const sort   = document.getElementById('sort-select') ? document.getElementById('sort-select').value : '';
+  const price  = document.getElementById('price-range') ? parseInt(document.getElementById('price-range').value) : 700;
+  const count  = brands + cats + (sort?1:0) + (price<700?1:0);
+  const badge  = document.getElementById('filter-badge');
+  if(badge) { badge.textContent=count; badge.style.display=count?'flex':'none'; }
+}
+
+function updateActiveTags() {
+  const container = document.getElementById('active-filters');
+  if(!container) return;
+  const tags = [];
+  document.querySelectorAll('[data-filter=brand]:checked').forEach(i=>tags.push({label:i.value.charAt(0).toUpperCase()+i.value.slice(1), remove:()=>{i.checked=false;applySidebar();}}));
+  document.querySelectorAll('[data-filter=cat]:checked').forEach(i=>tags.push({label:i.value, remove:()=>{i.checked=false;applySidebar();}}));
+  const sort = document.getElementById('sort-select');
+  if(sort && sort.value) tags.push({label:sort.options[sort.selectedIndex].text, remove:()=>{sort.value='';applySidebar();}});
+  const price = document.getElementById('price-range');
+  if(price && parseInt(price.value)<700) tags.push({label:`≤${price.value} OMR`, remove:()=>{price.value=700;document.getElementById('price-val').textContent=700;applySidebar();}});
+  container.innerHTML = tags.map((t,i)=>`<span class="active-tag" onclick="removals[${i}]()">${t.label} ✕</span>`).join('');
+  window.removals = tags.map(t=>t.remove);
+}
+
+readURLParams();
+renderAllProducts(currentFilter);
+updateActiveTags();
+applyLang();
+
+// ── STOCK TOGGLE (for product list in admin panel if embedded) ──
+function toggleSoldOut(id) {
+  const overrides = JSON.parse(localStorage.getItem('bbc_stock_overrides')||'{}');
+  const allProds  = getAllProducts();
+  const prod      = allProds.find(p => p.id == id);
+  if (!prod) return;
+  const cur  = overrides[id] !== undefined ? overrides[id] : (prod.soldOut||false);
+  const next = !cur;
+  overrides[id] = next;
+  localStorage.setItem('bbc_stock_overrides', JSON.stringify(overrides));
+  // Update admin products list if product was admin-added
+  const adminProds = JSON.parse(localStorage.getItem('bbc_admin_products')||'[]');
+  const ap = adminProds.find(p => p.id == id);
+  if (ap) { ap.soldOut=next; if(next) ap.stockQty=0; localStorage.setItem('bbc_admin_products',JSON.stringify(adminProds)); }
+  renderAllProducts(currentFilter||{});
+  showToast(next ? '🚫 Marked as Sold Out' : '✅ Back In Stock!');
+}
+
+function showToast(msg) {
+  let t = document.getElementById('toast-pop');
+  if (!t) { t=document.createElement('div'); t.id='toast-pop'; t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1a1a2e;color:#fff;padding:12px 24px;border-radius:10px;font-size:14px;font-weight:500;z-index:9999;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap'; document.body.appendChild(t); }
+  t.textContent=msg; t.style.opacity='1';
+  setTimeout(()=>t.style.opacity='0',2500);
+}
+
+</script>
+
+<div id="admin-panel-overlay" style="display:none;position:fixed;inset:0;z-index:9999;overflow-y:auto">
+
+
+<!-- ── LOGIN SCREEN ── -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">BB</div>
+    <h1>BBC Mobile Admin</h1>
+    <p>Sign in to manage your products</p>
+    <input class="login-field" type="text" id="login-user" placeholder="Username" value="">
+    <input class="login-field" type="password" id="login-pass" placeholder="Password" value="">
+    <button class="login-btn" onclick="doLogin()">Sign In</button>
+    <div class="login-error" id="login-error">❌ Incorrect username or password</div>
+  </div>
+</div>
+
+<!-- ── ADMIN SCREEN ── -->
+<div id="admin-screen">
+
+  <!-- TOP BAR -->
+  <div class="admin-top">
+    <div class="admin-top-left">
+      <div class="admin-logo">BB</div>
+      <h1>BBC Mobile — Admin</h1>
+    </div>
+    <div class="admin-top-right">
+      <span class="badge">● Live</span>
+      <button class="btn-logout" onclick="doLogout()">Sign Out</button>
+    </div>
+  </div>
+
+  <div class="admin-body">
+
+    <!-- SIDEBAR NAV -->
+    <div class="admin-nav">
+      <div class="nav-section">Main</div>
+      <div class="nav-item active" onclick="showPage('dashboard')">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </div>
+      <div class="nav-item" onclick="showPage('add-product')">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        Add Product
+      </div>
+      <div class="nav-item" onclick="showPage('brand-logos')">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Brand Logos
+      </div>
+      <div class="nav-item" onclick="showPage('all-products')">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        All Products
+      </div>
+      <div class="nav-section">Catalog</div>
+      <div class="nav-item" onclick="showPage('all-products');filterByStatus('published')">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        Published
+      </div>
+      <div class="nav-item" onclick="showPage('all-products');filterByStatus('draft')">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Drafts
+      </div>
+      <div class="nav-section">Settings</div>
+      <div class="nav-item" onclick="showPage('settings')">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Settings
+      </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="admin-content">
+
+      <!-- DASHBOARD -->
+      <div class="page-section active" id="page-dashboard">
+        <div class="section-hd">
+          <h2>Dashboard</h2>
+          <button class="btn btn-primary" onclick="showPage('add-product')">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Product
+          </button>
+        </div>
+        <div class="stats-grid" id="stats-grid"></div>
+        <div class="form-card">
+          <div class="form-card-head">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <h3>Recently Added</h3>
+          </div>
+          <div id="recent-products" style="padding:16px"></div>
+        </div>
+      </div>
+
+      <!-- ADD / EDIT PRODUCT -->
+      <div class="page-section" id="page-add-product">
+        <div class="section-hd">
+          <h2 id="form-page-title">Add New Product</h2>
+          <button class="btn btn-secondary" onclick="cancelEdit()">Cancel</button>
+        </div>
+
+        <div class="form-card">
+          <div class="form-card-head">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+            <h3>Product Photos</h3>
+          </div>
+          <div style="padding:24px">
+            <!-- DRAG & DROP UPLOAD -->
+            <div class="photo-upload-area" id="drop-zone" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" ondrop="handleDrop(event)">
+              <input type="file" class="photo-upload-input" id="photo-file-input" accept="image/*" multiple onchange="handleFileSelect(event)">
+              <div class="photo-upload-icon">📸</div>
+              <p><strong>Drag & drop photos here</strong> or click to browse</p>
+              <small>JPG, PNG, WEBP — up to 10MB each — multiple photos allowed</small>
+            </div>
+            <!-- OR URL -->
+            <div style="display:flex;align-items:center;gap:10px;margin:14px 0">
+              <div style="flex:1;height:1px;background:var(--border)"></div>
+              <span style="font-size:12px;color:var(--light);font-weight:600">OR paste image URL</span>
+              <div style="flex:1;height:1px;background:var(--border)"></div>
+            </div>
+            <div class="url-row">
+              <input type="text" class="form-input" id="photo-url-input" placeholder="https://example.com/photo.jpg">
+              <button class="btn btn-secondary" onclick="addPhotoFromURL()">Add</button>
+            </div>
+            <!-- PREVIEWS -->
+            <div class="photo-previews" id="photo-previews"></div>
+            <input type="hidden" id="photos-data">
+          </div>
+        </div>
+
+        <div class="form-card">
+          <div class="form-card-head">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="17" y1="18" x2="3" y2="18"/></svg>
+            <h3>Product Details</h3>
+          </div>
+          <div class="form-body">
+            <div class="form-group">
+              <label class="form-label">Product Name (English) <span>*</span></label>
+              <input type="text" class="form-input" id="f-name-en" placeholder="e.g. iPhone 16 Pro Max">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Product Name (Arabic)</label>
+              <input type="text" class="form-input" id="f-name-ar" placeholder="e.g. آيفون 16 برو ماكس" dir="rtl">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Brand <span>*</span></label>
+              <select class="form-select" id="f-brand">
+                <option value="">Select brand...</option>
+                <option value="apple">Apple</option>
+                <option value="samsung">Samsung</option>
+                <option value="huawei">Huawei</option>
+                <option value="xiaomi">Xiaomi</option>
+                <option value="oppo">OPPO</option>
+                <option value="vivo">Vivo</option>
+                <option value="realme">Realme</option>
+                <option value="nokia">Nokia</option>
+                <option value="motorola">Motorola</option>
+                <option value="honor">Honor</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Category <span>*</span></label>
+              <select class="form-select" id="f-cat">
+                <option value="">Select category...</option>
+                <option value="smartphones">Smartphones</option>
+                <option value="tablets">Tablets</option>
+                <option value="smartwatches">Smartwatches</option>
+                <option value="accessories">Accessories</option>
+                <option value="laptops">Laptops</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Price (OMR) <span>*</span></label>
+              <input type="number" class="form-input" id="f-price" placeholder="0.000" step="0.001" min="0">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Old Price (OMR) <small style="color:var(--muted);font-weight:400">— leave empty if no discount</small></label>
+              <input type="number" class="form-input" id="f-old-price" placeholder="0.000" step="0.001" min="0">
+            </div>
+            <div class="form-group full">
+              <label class="form-label">Description (English)</label>
+              <textarea class="form-textarea" id="f-desc-en" placeholder="Describe the product — specs, features, what's in the box..."></textarea>
+            </div>
+            <div class="form-group full">
+              <label class="form-label">Description (Arabic)</label>
+              <textarea class="form-textarea" id="f-desc-ar" placeholder="وصف المنتج بالعربية..." dir="rtl"></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Star Rating</label>
+              <div class="star-input">
+                <input type="radio" name="stars" id="s5" value="5"><label for="s5">★</label>
+                <input type="radio" name="stars" id="s4" value="4"><label for="s4">★</label>
+                <input type="radio" name="stars" id="s3" value="3" checked><label for="s3">★</label>
+                <input type="radio" name="stars" id="s2" value="2"><label for="s2">★</label>
+                <input type="radio" name="stars" id="s1" value="1"><label for="s1">★</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Tags</label>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer">
+                  <input type="checkbox" id="f-new" style="accent-color:var(--green);width:15px;height:15px"> New Arrival
+                </label>
+                <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer">
+                  <input type="checkbox" id="f-sale" style="accent-color:var(--accent);width:15px;height:15px"> On Sale
+                </label>
+                <label style="display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer">
+                  <input type="checkbox" id="f-featured" style="accent-color:var(--accent2);width:15px;height:15px"> Featured
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-card">
+          <div class="form-card-head">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+            <h3>Publication</h3>
+          </div>
+          <div style="padding:24px;display:flex;flex-direction:column;gap:18px">
+            <div class="toggle-wrap">
+              <label class="toggle">
+                <input type="checkbox" id="f-published" checked>
+                <span class="toggle-slider"></span>
+              </label>
+              <div>
+                <div class="toggle-label">Publish immediately</div>
+                <div style="font-size:12px;color:var(--muted)">Product will be visible on your shop</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <button class="btn btn-primary" onclick="saveProduct()" id="save-btn">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                Save & Publish
+              </button>
+              <button class="btn btn-secondary" onclick="saveDraft()">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                Save as Draft
+              </button>
+            </div>
+          </div>
+        </div>
+        <input type="hidden" id="editing-id">
+      </div>
+
+      <!-- ALL PRODUCTS -->
+      <div class="page-section" id="page-all-products">
+        <div class="section-hd">
+          <h2>All Products</h2>
+          <button class="btn btn-primary" onclick="showPage('add-product')">
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Product
+          </button>
+        </div>
+        <div class="search-row">
+          <input type="text" class="admin-search" id="prod-search" placeholder="🔍  Search products..." oninput="renderProductList()">
+          <select class="form-select" id="prod-filter-status" onchange="renderProductList()" style="width:140px">
+            <option value="">All Status</option>
+            <option value="published">Published</option>
+            <option value="draft">Draft</option>
+          </select>
+          <select class="form-select" id="prod-filter-brand" onchange="renderProductList()" style="width:140px">
+            <option value="">All Brands</option>
+            <option value="apple">Apple</option>
+            <option value="samsung">Samsung</option>
+            <option value="huawei">Huawei</option>
+            <option value="xiaomi">Xiaomi</option>
+            <option value="oppo">OPPO</option>
+            <option value="vivo">Vivo</option>
+            <option value="realme">Realme</option>
+            <option value="nokia">Nokia</option>
+            <option value="motorola">Motorola</option>
+            <option value="honor">Honor</option>
+          </select>
+        </div>
+        <div class="products-table">
+          <div class="table-head">
+            <div>Photo</div>
+            <div>Product</div>
+            <div>Brand</div>
+            <div>Price</div>
+            <div>Status</div>
+            <div>Actions</div>
+          </div>
+          <div id="products-list-body"></div>
+        </div>
+      </div>
+
+
+      <!-- BRAND LOGOS -->
+      <div class="page-section" id="page-brand-logos">
+        <div class="section-hd">
+          <h2>Brand Logos</h2>
+          <span style="font-size:13px;color:var(--muted)">Click any logo to upload a new photo</span>
+        </div>
+        <div class="form-card">
+          <div class="form-card-head">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            <h3>Manage Brand Logos — click a logo to change it</h3>
+          </div>
+          <div class="brand-logo-grid" id="brand-logo-grid"></div>
+        </div>
+      </div>
+      <!-- SETTINGS -->
+      <div class="page-section" id="page-settings">
+        <div class="section-hd"><h2>Settings</h2></div>
+        <div class="form-card">
+          <div class="form-card-head">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <h3>Change Password</h3>
+          </div>
+          <div class="form-body" style="max-width:500px">
+            <div class="form-group full">
+              <label class="form-label">Current Password</label>
+              <input type="password" class="form-input" id="s-current-pw" placeholder="Enter current password">
+            </div>
+            <div class="form-group">
+              <label class="form-label">New Password</label>
+              <input type="password" class="form-input" id="s-new-pw" placeholder="New password">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Confirm New Password</label>
+              <input type="password" class="form-input" id="s-confirm-pw" placeholder="Confirm new password">
+            </div>
+            <div class="form-group full">
+              <button class="btn btn-primary" onclick="changePassword()" style="width:fit-content">Update Password</button>
+            </div>
+          </div>
+        </div>
+        <div class="form-card" style="margin-top:20px">
+          <div class="form-card-head">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+            <h3>Danger Zone</h3>
+          </div>
+          <div style="padding:24px">
+            <p style="font-size:14px;color:var(--muted);margin-bottom:16px">Permanently delete all products. This cannot be undone.</p>
+            <button class="btn btn-danger" onclick="confirmDeleteAll()">Delete All Products</button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /admin-content -->
+  </div><!-- /admin-body -->
+</div><!-- /admin-screen -->
+
+<!-- CONFIRM MODAL -->
+<div class="modal-overlay" id="confirm-modal">
+  <div class="modal">
+    <h3 id="modal-title">Are you sure?</h3>
+    <p id="modal-body">This action cannot be undone.</p>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-danger" id="modal-confirm-btn">Delete</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+
+
+</div>
+<style>
+#admin-fab{position:fixed;bottom:24px;right:24px;z-index:10000;background:#1a1a2e;color:#fff;width:52px;height:52px;border-radius:50%;font-size:22px;box-shadow:0 4px 20px rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;text-decoration:none;border:2px solid rgba(255,255,255,0.15);opacity:0;transition:opacity .3s}
+#admin-fab:hover{opacity:1!important}
+</style>
+<a id="admin-fab" href="admin.html" title="Admin Panel">⚙️</a>
+
+</body>
+</html>
