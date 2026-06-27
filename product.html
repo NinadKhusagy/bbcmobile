@@ -69,7 +69,7 @@ header{background:#fff;border-bottom:1px solid var(--border);position:sticky;top
 .price-cur{font-size:15px;font-weight:500;color:var(--muted);align-self:flex-end;margin-bottom:4px}
 .price-old{font-size:15px;color:var(--muted);text-decoration:line-through}
 .disc-badge{background:#fee2e2;color:var(--accent);font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px}
-.install-hint{background:#f0fdf4;border:1px solid #bbf7d0;color:#065f46;font-size:13px;padding:8px 14px;border-radius:8px;margin-bottom:18px;display:none}
+.install-hint{background:#f0fdf4;border:1px solid #bbf7d0;color:#065f46;font-size:13px;padding:8px 14px;border-radius:8px;margin-bottom:18px}
 
 /* TAGS */
 .tags-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
@@ -79,10 +79,10 @@ header{background:#fff;border-bottom:1px solid var(--border);position:sticky;top
 .tag-sold{background:#f3f4f6;color:#6b7280}
 
 /* DESC */
-.desc-box{background:#f9fafb;border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:20px;font-size:14px;color:var(--muted);line-height:1.8;display:none}
+.desc-box{background:#f9fafb;border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:20px;font-size:14px;color:var(--muted);line-height:1.8}
 
 /* COLOR VARIANTS */
-.variants-box{margin-bottom:20px;display:none}
+.variants-box{margin-bottom:20px}
 .variants-title{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px}
 .swatches{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
 .swatch{width:34px;height:34px;border-radius:50%;cursor:pointer;border:3px solid transparent;transition:all .2s;box-shadow:0 1px 4px rgba(0,0,0,.2)}
@@ -447,7 +447,9 @@ function renderPage() {
 
   const discount = p.oldPrice ? Math.round((1 - p.price / p.oldPrice) * 100) : 0;
   const brandName = BRANDS_MAP[p.brand] || p.brand || '';
-  const desc = isAr ? (p.descAr || p.desc || '') : (p.desc || p.descEn || '');
+  const desc = isAr
+    ? (p.descAr || p.descEn || p.desc || '')
+    : (p.desc || p.descEn || p.descAr || '');
 
   // Tags
   const tags = [];
