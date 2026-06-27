@@ -377,17 +377,20 @@ function renderSummary() {
     items.innerHTML = '<div style="padding:20px;text-align:center;color:var(--muted)">Cart is empty</div>';
     return;
   }
-  items.innerHTML = cart.map(p => `
-    <div class="summary-item">
-      ${p.img
-        ? `<img src="${p.img}" class="s-img" onerror="this.style.display='none'" alt="${isAr?p.nameAr:p.nameEn}">`
-        : `<div class="s-img-ph">${EMOJIS[p.brand]||'📱'}</div>`}
-      <div style="flex:1;min-width:0">
-        <div class="s-name">${isAr?p.nameAr:p.nameEn}</div>
-        <div class="s-qty">${isAr?'الكمية':'Qty'}: ${p.qty}</div>
-      </div>
-      <div class="s-price">${(p.price*p.qty).toFixed(3)}<br><small style="font-size:10px;font-weight:400;color:var(--muted)">OMR</small></div>
-    </div>`).join('');
+  items.innerHTML = cart.map(p => {
+    const imgEl = p.img
+      ? '<img src="' + p.img + '" class="s-img" onerror="this.style.display=\'none\'" alt="' + (isAr?p.nameAr:p.nameEn) + '">'
+      : '<div class="s-img-ph">' + (EMOJIS[p.brand]||'📱') + '</div>';
+    const variantLabel = p.variantName ? ' <small style="color:var(--muted)">(' + p.variantName + ')</small>' : '';
+    return '<div class="summary-item">' +
+      imgEl +
+      '<div style="flex:1;min-width:0">' +
+        '<div class="s-name">' + (isAr?p.nameAr:p.nameEn) + variantLabel + '</div>' +
+        '<div class="s-qty">' + (isAr?'الكمية':'Qty') + ': ' + p.qty + '</div>' +
+      '</div>' +
+      '<div class="s-price">' + (p.price*p.qty).toFixed(3) + '<br><small style="font-size:10px;font-weight:400;color:var(--muted)">OMR</small></div>' +
+    '</div>';
+  }).join('');
 
   const subtotal = cart.reduce((a,c) => a+c.price*c.qty, 0);
   const total    = subtotal + deliveryFee;
