@@ -322,8 +322,15 @@ function clearAll() {
 function renderWishlist() {
   const grid    = document.getElementById('wishlist-grid');
   const badge   = document.getElementById('wish-count-badge');
+  
+  // Re-read from localStorage fresh every time
+  wishlist = JSON.parse(localStorage.getItem('bbc_wish') || '[]');
+  
   const all     = getAllProducts();
-  const items   = wishlist.map(id => all.find(p => String(p.id) === String(id))).filter(Boolean);
+  // Match by loose equality to handle number/string mismatch
+  const items   = wishlist
+    .map(id => all.find(p => p.id == id))
+    .filter(Boolean);
 
   badge.textContent = items.length;
 
@@ -436,6 +443,9 @@ function showToast(msg) {
 }
 
 // ── INIT ──────────────────────────────────────────────────
+// Re-read all storage fresh
+wishlist = JSON.parse(localStorage.getItem('bbc_wish') || '[]');
+cart     = JSON.parse(localStorage.getItem('bbc_cart') || '[]');
 applyLang();
 renderWishlist();
 updateCartCount();
