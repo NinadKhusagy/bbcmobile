@@ -827,11 +827,11 @@ function productCardHTML(p, isAr) {
   return `
     <div class="product-card ${p.soldOut?'sold-out':''}" data-id="${p.id}" data-brand="${p.brand}" data-cat="${p.cat}" onclick="location.href='product.html?id='+p.id" style="cursor:pointer">
       <div class="product-img-wrap">
-        ${p.soldOut ? `<div class="sold-out-overlay"><div class="sold-out-tag">Sold Out</div></div>` : ''}
+        ${p.soldOut ? '<div class="sold-out-overlay"><div class="sold-out-tag">Sold Out</div></div>' : ''}
         <img src="${p.img || ''}" alt="${name}" class="product-img" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" style="${!p.img?'display:none':''}">
         <div style="${p.img?'display:none':'display:flex'};align-items:center;justify-content:center;font-size:52px;width:100%;height:100%">${brand?.emoji||'📱'}</div>
-        ${p.isNew ? `<span class="badge badge-new" data-en="New" data-ar="جديد">New</span>` : ''}
-        ${p.isSale && discount ? `<span class="badge badge-sale">-${discount}%</span>` : ''}
+        ${p.isNew ? '<span class="badge badge-new" data-en="New" data-ar="جديد">New</span>' : ''}
+        ${p.isSale && discount ? '<span class="badge badge-sale">-'+discount+'%</span>' : ''}
         <button class="wishlist-btn" onclick="event.stopPropagation();toggleWishlist(${p.id},event)" title="Add to wishlist" aria-label="Add to wishlist">
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
         </button>
@@ -842,16 +842,11 @@ function productCardHTML(p, isAr) {
         ${starHTML(p.stars)}
         <div class="product-pricing">
           <span class="product-price">${p.price.toFixed(3)} <small>OMR</small></span>
-          ${p.oldPrice ? `<span class="product-old-price">${p.oldPrice.toFixed(3)}</span>` : ''}
+          ${p.oldPrice ? '<span class="product-old-price">' + p.oldPrice.toFixed(3) + '</span>' : ''}
         </div>
         ${p.soldOut
-          ? `<button class="btn-sold-out" disabled>
-               🚫 <span data-en="Sold Out" data-ar="نفذت الكمية">Sold Out</span>
-             </button>`
-          : `<button class="btn-add-cart" onclick="event.stopPropagation();addToCart(${p.id})">
-               <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-               <span data-en="Add to Cart" data-ar="أضف للسلة">Add to Cart</span>
-             </button>`
+          ? '<button class="btn-sold-out" disabled>🚫 <span data-en="Sold Out" data-ar="نفذت الكمية">Sold Out</span></button>'
+          : '<button class="btn-add-cart" onclick="event.stopPropagation();addToCart(' + p.id + ')"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><span data-en="Add to Cart" data-ar="أضف للسلة">Add to Cart</span></button>'
         }
       </div>
     </div>
